@@ -1,11 +1,17 @@
 package br.com.backend.leitura_solidaria.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+@Entity
 public class Users implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUsers;
     private String fullName;
     private String mail;
