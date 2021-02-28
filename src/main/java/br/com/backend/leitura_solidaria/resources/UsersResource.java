@@ -1,9 +1,10 @@
 package br.com.backend.leitura_solidaria.resources;
 
 import br.com.backend.leitura_solidaria.domain.Users;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import br.com.backend.leitura_solidaria.services.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +13,12 @@ import java.util.List;
 @RequestMapping(value = "/users")
 public class UsersResource {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Users> listUsers() {
+    @Autowired
+    private UsersService service;
 
-        Users users = new Users(1, "Arquimedes Junior", "arquim@mail.com", "123", "https/tteses");
-        Users users2 = new Users(2, "Arquimedes Junior", "arquim@mail.com", "123", "https/tteses");
-
-        List<Users> list = new ArrayList<>();
-
-        list.add(users);
-        list.add(users2);
-
-        return list;
+    @RequestMapping(value = {"/{id}"}, method = RequestMethod.GET)
+    public ResponseEntity<?> listUsers(@PathVariable Integer id) {
+        Users obj = service.search(id);
+        return ResponseEntity.ok().body(obj);
     }
 }
