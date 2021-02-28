@@ -1,16 +1,11 @@
 package br.com.backend.leitura_solidaria.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Objects;
 
-@Entity
+
 public class Users implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer idUsers;
     private String fullName;
     private String mail;
@@ -74,5 +69,22 @@ public class Users implements Serializable {
                 ", password='" + password + '\'' +
                 ", img='" + img + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users = (Users) o;
+        return Objects.equals(idUsers, users.idUsers) &&
+                Objects.equals(fullName, users.fullName) &&
+                Objects.equals(mail, users.mail) &&
+                Objects.equals(password, users.password) &&
+                Objects.equals(img, users.img);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUsers, fullName, mail, password, img);
     }
 }
