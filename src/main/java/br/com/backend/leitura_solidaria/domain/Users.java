@@ -18,6 +18,9 @@ public class Users implements Serializable {
     private String password;
     private String img;
 
+    public Users() {
+    }
+
     public Users(Integer idUsers, String fullName, String mail, String password, String img) {
         this.idUsers = idUsers;
         this.fullName = fullName;
