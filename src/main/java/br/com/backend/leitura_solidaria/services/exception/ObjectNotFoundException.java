@@ -1,4 +1,4 @@
-package br.com.backend.leitura_solidaria.services.exceptions;
+package br.com.backend.leitura_solidaria.services.exception;
 
 public class ObjectNotFoundException extends RuntimeException {
 

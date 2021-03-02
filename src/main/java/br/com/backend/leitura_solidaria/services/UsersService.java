@@ -2,7 +2,7 @@ package br.com.backend.leitura_solidaria.services;
 
 import br.com.backend.leitura_solidaria.domain.Users;
 import br.com.backend.leitura_solidaria.repositories.UsersRepository;
-import br.com.backend.leitura_solidaria.services.exceptions.ObjectNotFoundException;
+import br.com.backend.leitura_solidaria.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
