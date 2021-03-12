@@ -1,10 +1,11 @@
 package br.com.backend.leitura_solidaria.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,19 +15,29 @@ public class Users implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUsers;
     private String fullName;
+
+    @Column(unique = true)
     private String mail;
     private String password;
-    private String img;
+    private String urlImg;
+
+    @JsonBackReference
+    @ManyToMany
+    @JoinTable(name = "users_ranking",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "ranking_id")
+    )
+    private List<Ranking> rankings = new ArrayList<>();
 
     public Users() {
     }
 
-    public Users(Integer idUsers, String fullName, String mail, String password, String img) {
+    public Users(Integer idUsers, String fullName, String mail, String password, String urlImg) {
         this.idUsers = idUsers;
         this.fullName = fullName;
         this.mail = mail;
         this.password = password;
-        this.img = img;
+        this.urlImg = urlImg;
     }
 
     public Integer getIdUsers() {
@@ -61,39 +72,32 @@ public class Users implements Serializable {
         this.password = password;
     }
 
-    public String getImg() {
-        return img;
+    public String geturlImg() {
+        return urlImg;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void seturlImg(String urlImg) {
+        this.urlImg = urlImg;
     }
 
-    @Override
-    public String toString() {
-        return "Users{" +
-                "idUsers=" + idUsers +
-                ", fullName='" + fullName + '\'' +
-                ", mail='" + mail + '\'' +
-                ", password='" + password + '\'' +
-                ", img='" + img + '\'' +
-                '}';
+    public List<Ranking> getRankings() {
+        return rankings;
+    }
+
+    public void setRankings(List<Ranking> rankings) {
+        this.rankings = rankings;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Users)) return false;
         Users users = (Users) o;
-        return Objects.equals(idUsers, users.idUsers) &&
-                Objects.equals(fullName, users.fullName) &&
-                Objects.equals(mail, users.mail) &&
-                Objects.equals(password, users.password) &&
-                Objects.equals(img, users.img);
+        return getIdUsers().equals(users.getIdUsers());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUsers, fullName, mail, password, img);
+        return Objects.hash(getIdUsers());
     }
 }
