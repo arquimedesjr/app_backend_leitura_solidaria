@@ -1,6 +1,7 @@
 package br.com.backend.leitura_solidaria.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,7 +22,7 @@ public class Users implements Serializable {
     private String password;
     private String urlImg;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "users_ranking",
             joinColumns = @JoinColumn(name = "user_id"),

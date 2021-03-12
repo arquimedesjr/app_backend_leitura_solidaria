@@ -1,7 +1,5 @@
 package br.com.backend.leitura_solidaria.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ public class Ranking implements Serializable {
     private Boolean dailyReading;
     private Boolean bookworm;
 
-    @JsonManagedReference
     @ManyToMany(mappedBy="rankings")
     private List<Users> users = new ArrayList<>();
 

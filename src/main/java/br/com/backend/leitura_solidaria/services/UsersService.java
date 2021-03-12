@@ -1,9 +1,15 @@
 package br.com.backend.leitura_solidaria.services;
 
 import br.com.backend.leitura_solidaria.domain.Users;
+import br.com.backend.leitura_solidaria.dto.UsersDTO;
 import br.com.backend.leitura_solidaria.repositories.UsersRepository;
+import br.com.backend.leitura_solidaria.services.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,18 +21,43 @@ public class UsersService {
     @Autowired
     private UsersRepository repo;
 
-    public List<Users> search(){
+    public List<Users> findAll() {
         return repo.findAll();
     }
 
-    public Users save(Users users) {
+    public Users find(Integer id) {
+        Optional<Users> obj = repo.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName()));
+    }
+
+    public Users insert(Users users) {
+        try {
+            users.setIdUsers(null);
+            return repo.save(users);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityException("Não foi possível inserir o usuário, email já cadastrado!");
+        }
+    }
+
+    public Users update(Users users) {
+        find(users.getIdUsers());
         return repo.save(users);
     }
 
-    public Users find(Integer id) {
-        Optional<Users> obj =  repo.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName()));
+    public void delete(Integer id) {
+        Users users = find(id);
+        repo.delete(users);
+    }
+
+    public Page<Users> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repo.findAll(pageRequest);
+    }
+
+    public Users fromDTO(UsersDTO usersDTO) {
+        return new Users(usersDTO.getIdUsers(), usersDTO.getFullName(), usersDTO.getMail(),
+                usersDTO.getPassword(), usersDTO.getUrlImg());
     }
 
 }

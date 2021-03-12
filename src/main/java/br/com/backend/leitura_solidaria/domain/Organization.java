@@ -1,6 +1,7 @@
 package br.com.backend.leitura_solidaria.domain;
 
 import br.com.backend.leitura_solidaria.domain.enums.TypeOrganization;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;

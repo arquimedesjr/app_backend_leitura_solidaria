@@ -1,5 +1,7 @@
 package br.com.backend.leitura_solidaria.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ public class States implements Serializable {
     private Integer idStates;
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "states")
     private List<City> cityLis = new ArrayList<>();
 
