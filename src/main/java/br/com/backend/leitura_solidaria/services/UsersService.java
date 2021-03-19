@@ -1,7 +1,6 @@
 package br.com.backend.leitura_solidaria.services;
 
 import br.com.backend.leitura_solidaria.domain.Users;
-import br.com.backend.leitura_solidaria.dto.UsersDTO;
 import br.com.backend.leitura_solidaria.repositories.UsersRepository;
 import br.com.backend.leitura_solidaria.services.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.services.exception.ObjectNotFoundException;
@@ -33,16 +32,16 @@ public class UsersService {
 
     public Users insert(Users obj) {
         try {
-            obj.setIdUsers(null);
+            obj.setId(null);
             return repo.save(obj);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não foi possível inserir o usuário, email já cadastrado!");
+            throw new DataIntegrityException("Não foi possível inserir o usuário");
         }
     }
 
     public Users update(Users obj) {
-        Users newObj = find(obj.getIdUsers());
-        updateData(newObj,obj);
+        Users newObj = find(obj.getId());
+        updateData(newObj, obj);
         return repo.save(newObj);
     }
 
@@ -56,16 +55,13 @@ public class UsersService {
         return repo.findAll(pageRequest);
     }
 
-    public Users fromDTO(UsersDTO objDTO) {
-        return new Users(objDTO.getIdUsers(), objDTO.getFullName(), objDTO.getMail(),
-                objDTO.getPassword(), objDTO.getUrlImg());
-    }
-
     public void updateData(Users newObj, Users obj) {
         newObj.setFullName(obj.getFullName());
         newObj.setMail(obj.getMail());
         newObj.setPassword(obj.getPassword());
-        newObj.seturlImg(obj.getMail());
+        newObj.setUrlImg(obj.getUrlImg());
+        newObj.setProfile(obj.getProfile());
+        newObj.setOrganization(obj.getOrganization());
     }
 
 }

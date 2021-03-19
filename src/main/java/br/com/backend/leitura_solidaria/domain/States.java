@@ -1,7 +1,5 @@
 package br.com.backend.leitura_solidaria.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,18 +11,17 @@ public class States implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idStates;
+    private Integer id;
     private String name;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "states")
     private List<City> cityLis = new ArrayList<>();
 
     public States(){
     }
 
-    public States(Integer idStates, String name) {
-        this.idStates = idStates;
+    public States(Integer id, String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -33,20 +30,20 @@ public class States implements Serializable {
         if (this == o) return true;
         if (!(o instanceof States)) return false;
         States city = (States) o;
-        return getIdStates().equals(city.getIdStates());
+        return getId().equals(city.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIdStates());
+        return Objects.hash(getId());
     }
 
-    public Integer getIdStates() {
-        return idStates;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdStates(Integer idStates) {
-        this.idStates = idStates;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public List<City> getCityLis() {

@@ -17,8 +17,6 @@ public class Ranking implements Serializable {
     private Boolean dailyReading;
     private Boolean bookworm;
 
-    @ManyToMany(mappedBy="rankings")
-    private List<Users> users = new ArrayList<>();
 
     public Ranking() {
     }
@@ -69,14 +67,6 @@ public class Ranking implements Serializable {
 
     public void setBookworm(Boolean bookworm) {
         this.bookworm = bookworm;
-    }
-
-    public List<Users> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<Users> users) {
-        this.users = users;
     }
 
     @Override

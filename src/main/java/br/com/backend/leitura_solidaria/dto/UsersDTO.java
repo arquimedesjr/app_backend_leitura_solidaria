@@ -1,43 +1,70 @@
 package br.com.backend.leitura_solidaria.dto;
 
+import br.com.backend.leitura_solidaria.domain.Organization;
+import br.com.backend.leitura_solidaria.domain.Profile;
 import br.com.backend.leitura_solidaria.domain.Users;
+import br.com.backend.leitura_solidaria.domain.enums.TypeUsers;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class UsersDTO implements Serializable {
 
 
-    private Integer idUsers;
-    @NotEmpty(message = "Preenchimento obrigatório")
-    @Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 a 80 caracteres")
+    private Integer id;
     private String fullName;
-    @NotEmpty(message = "Preenchimento obrigatório")
-    @Email(message = "Email inválido")
     private String mail;
     private String password;
     private String urlImg;
+    private Profile profile;
+    private HashMap<String, Object> partner = new LinkedHashMap<>();
+    private HashMap<String, Object> ong = new LinkedHashMap<>();
 
     public UsersDTO() {
     }
 
     public UsersDTO(Users users) {
-        idUsers = users.getIdUsers();
+        id = users.getId();
         fullName = users.getFullName();
         mail = users.getMail();
         password = users.getPassword();
-        urlImg = users.geturlImg();
+        urlImg = users.getUrlImg();
+        profile = users.getProfile();
+        partner = validOrganizationPartner(users.getOrganization());
+        ong = validOrganizationOng(users.getOrganization());
+    }
+
+    public HashMap<String, Object> validOrganizationPartner(Organization organization) {
+        if (profile.getName().equals(TypeUsers.PARTNER.getDescription()) && organization.getProfile().getDescription().equals(profile.getName())) {
+            partner.put("id", organization.getId());
+            partner.put("name", organization.getFullName());
+            return partner;
+        }
+        return null;
     }
 
 
-    public Integer getIdUsers() {
-        return idUsers;
+    public HashMap<String, Object> validOrganizationOng(Organization organization) {
+
+        if (profile.getName().equals(TypeUsers.ONG.getDescription()) && organization.getProfile().getDescription().equals(profile.getName())) {
+            ong.put("id", organization.getId());
+            ong.put("name", organization.getFullName());
+            return ong;
+        }
+        return null;
     }
 
-    public void setIdUsers(Integer idUsers) {
-        this.idUsers = idUsers;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer idUsers) {
+        this.id = idUsers;
     }
 
     public String getFullName() {
@@ -70,5 +97,29 @@ public class UsersDTO implements Serializable {
 
     public void setUrlImg(String urlImg) {
         this.urlImg = urlImg;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public Map<String, Object> getPartner() {
+        return partner;
+    }
+
+    public void setPartner(HashMap<String, Object> partner) {
+        this.partner = partner;
+    }
+
+    public Map<String, Object> getOng() {
+        return ong;
+    }
+
+    public void setOng(HashMap<String, Object> ong) {
+        this.ong = ong;
     }
 }

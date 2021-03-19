@@ -40,25 +40,24 @@ public class UsersResource {
 
 
     @GetMapping(value = {"/{id}"})
-    public ResponseEntity<Users> find(@PathVariable Integer id) {
+    public ResponseEntity<UsersDTO> find(@PathVariable Integer id) {
         Users obj = service.find(id);
-        return ResponseEntity.ok().body(obj);
+        UsersDTO objDto = new UsersDTO(obj);
+        return ResponseEntity.ok().body(objDto);
     }
 
     @PostMapping()
-    public ResponseEntity<Users> insert(@Valid @RequestBody UsersDTO objDto) {
-        Users obj = service.fromDTO(objDto);
+    public ResponseEntity<Users> insert(@Valid @RequestBody Users obj) {
         obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(obj.getIdUsers()).toUri();
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(value = {"/{id}"})
-    public ResponseEntity<Users> update(@Valid @RequestBody UsersDTO usersDTO, @PathVariable Integer id) {
-        Users users = service.fromDTO(usersDTO);
-        users.setIdUsers(id);
-        service.update(users);
+    public ResponseEntity<Users> update(@Valid @RequestBody Users obj, @PathVariable Integer id) {
+        obj.setId(id);
+        service.update(obj);
         return ResponseEntity.noContent().build();
     }
 

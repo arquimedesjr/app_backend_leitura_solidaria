@@ -1,12 +1,11 @@
 package br.com.backend.leitura_solidaria.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import br.com.backend.leitura_solidaria.domain.enums.TypeUsers;
+import org.hibernate.annotations.CollectionId;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +13,7 @@ public class Users implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idUsers;
+    private Integer id;
     private String fullName;
 
     @Column(unique = true)
@@ -22,31 +21,41 @@ public class Users implements Serializable {
     private String password;
     private String urlImg;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "users_ranking",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "ranking_id")
-    )
-    private List<Ranking> rankings = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
 
     public Users() {
     }
 
-    public Users(Integer idUsers, String fullName, String mail, String password, String urlImg) {
-        this.idUsers = idUsers;
+    public Users(Integer id, String fullName, String mail, String password, String urlImg, Organization organization, Profile profile) {
+        this.id = id;
         this.fullName = fullName;
         this.mail = mail;
         this.password = password;
         this.urlImg = urlImg;
+        this.organization = organization;
+        this.profile = profile;
     }
 
-    public Integer getIdUsers() {
-        return idUsers;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setIdUsers(Integer idUsers) {
-        this.idUsers = idUsers;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFullName() {
@@ -73,20 +82,20 @@ public class Users implements Serializable {
         this.password = password;
     }
 
-    public String geturlImg() {
+    public String getUrlImg() {
         return urlImg;
     }
 
-    public void seturlImg(String urlImg) {
+    public void setUrlImg(String urlImg) {
         this.urlImg = urlImg;
     }
 
-    public List<Ranking> getRankings() {
-        return rankings;
+    public Profile getProfile() {
+        return profile;
     }
 
-    public void setRankings(List<Ranking> rankings) {
-        this.rankings = rankings;
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     @Override
@@ -94,11 +103,11 @@ public class Users implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Users)) return false;
         Users users = (Users) o;
-        return getIdUsers().equals(users.getIdUsers());
+        return getId().equals(users.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIdUsers());
+        return Objects.hash(getId());
     }
 }

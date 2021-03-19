@@ -1,15 +1,15 @@
 package br.com.backend.leitura_solidaria.domain.enums;
 
-public enum TypeOrganization {
+public enum TypeUsers {
 
     ONG(1, "ONG"),
-    PESSOAJURIDICA(2, "Pessoa Jurídica"),
-    PESSOAFISICA(3, "Pessoa Física");
+    USER(2, "Usuário"),
+    PARTNER(3, "Parceiro");
 
     private int cod;
     private String description;
 
-    TypeOrganization(int cod, String description) {
+    TypeUsers(int cod, String description) {
         this.cod = cod;
         this.description = description;
     }
@@ -22,12 +22,12 @@ public enum TypeOrganization {
         return description;
     }
 
-    public static TypeOrganization toenum(Integer cod) {
+    public static TypeUsers toenum(Integer cod) {
 
         if (cod == null)
             return null;
 
-        for (TypeOrganization x : TypeOrganization.values()) {
+        for (TypeUsers x : TypeUsers.values()) {
             if (cod.equals(x.getCod()))
                 return x;
         }

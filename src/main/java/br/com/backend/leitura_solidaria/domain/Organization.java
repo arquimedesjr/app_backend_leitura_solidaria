@@ -1,7 +1,7 @@
 package br.com.backend.leitura_solidaria.domain;
 
-import br.com.backend.leitura_solidaria.domain.enums.TypeOrganization;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import br.com.backend.leitura_solidaria.domain.enums.TypeUsers;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,11 +12,11 @@ public class Organization implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idOrganization;
+    private Integer id;
     private String fullName;
     private String mail;
     private String cnpj;
-    private Integer type;
+    private Integer profile;
 
     @OneToMany(mappedBy = "organization")
     private List<Address> addressList = new ArrayList<>();
@@ -25,15 +25,19 @@ public class Organization implements Serializable {
     @CollectionTable(name = "PHONE")
     private Set<String> phone = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "organization")
+    private List<Users> users = new ArrayList<>();
+
     public Organization() {
     }
 
-    public Organization(Integer idOrganization, String fullName, String mail, String cnpj, TypeOrganization type) {
-        this.idOrganization = idOrganization;
+    public Organization(Integer id, String fullName, String mail, String cnpj, Profile profile) {
+        this.id = id;
         this.fullName = fullName;
         this.mail = mail;
         this.cnpj = cnpj;
-        this.type = (type == null) ? null : type.getCod();
+        this.profile = profile.getId();
     }
 
     @Override
@@ -41,20 +45,20 @@ public class Organization implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Organization)) return false;
         Organization that = (Organization) o;
-        return getIdOrganization().equals(that.getIdOrganization());
+        return getId().equals(that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIdOrganization());
+        return Objects.hash(getId());
     }
 
-    public Integer getIdOrganization() {
-        return idOrganization;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdOrganization(Integer idOrganization) {
-        this.idOrganization = idOrganization;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFullName() {
@@ -81,12 +85,12 @@ public class Organization implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public TypeOrganization getType() {
-        return TypeOrganization.toenum(type);
+    public TypeUsers getProfile() {
+        return TypeUsers.toenum(profile);
     }
 
-    public void setType(TypeOrganization type) {
-        this.type = type.getCod();
+    public void setProfile(TypeUsers profile) {
+        this.profile = profile.getCod();
     }
 
     public List<Address> getAddressList() {

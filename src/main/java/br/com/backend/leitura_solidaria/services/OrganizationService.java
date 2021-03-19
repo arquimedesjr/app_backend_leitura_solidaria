@@ -29,4 +29,6 @@ public class OrganizationService {
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Organization.class.getName()));
     }
 
+
+
 }
