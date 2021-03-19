@@ -31,23 +31,24 @@ public class UsersService {
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName()));
     }
 
-    public Users insert(Users users) {
+    public Users insert(Users obj) {
         try {
-            users.setIdUsers(null);
-            return repo.save(users);
+            obj.setIdUsers(null);
+            return repo.save(obj);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não foi possível inserir o usuário, email já cadastrado!");
         }
     }
 
-    public Users update(Users users) {
-        find(users.getIdUsers());
-        return repo.save(users);
+    public Users update(Users obj) {
+        Users newObj = find(obj.getIdUsers());
+        updateData(newObj,obj);
+        return repo.save(newObj);
     }
 
     public void delete(Integer id) {
-        Users users = find(id);
-        repo.delete(users);
+        Users obj = find(id);
+        repo.delete(obj);
     }
 
     public Page<Users> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
@@ -55,9 +56,16 @@ public class UsersService {
         return repo.findAll(pageRequest);
     }
 
-    public Users fromDTO(UsersDTO usersDTO) {
-        return new Users(usersDTO.getIdUsers(), usersDTO.getFullName(), usersDTO.getMail(),
-                usersDTO.getPassword(), usersDTO.getUrlImg());
+    public Users fromDTO(UsersDTO objDTO) {
+        return new Users(objDTO.getIdUsers(), objDTO.getFullName(), objDTO.getMail(),
+                objDTO.getPassword(), objDTO.getUrlImg());
+    }
+
+    public void updateData(Users newObj, Users obj) {
+        newObj.setFullName(obj.getFullName());
+        newObj.setMail(obj.getMail());
+        newObj.setPassword(obj.getPassword());
+        newObj.seturlImg(obj.getMail());
     }
 
 }

@@ -15,20 +15,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/users")
 public class UsersResource {
 
     @Autowired
     private UsersService service;
 
-    @GetMapping(value = {"/users"})
+    @GetMapping()
     public ResponseEntity<List<UsersDTO>> findAll() {
         List<Users> list = service.findAll();
         List<UsersDTO> dtoList = list.stream().map(UsersDTO::new).collect(Collectors.toList());
         return ResponseEntity.ok().body(dtoList);
     }
 
-    @GetMapping(value = {"/users/page"})
+    @GetMapping(value = {"/page"})
     public ResponseEntity<Page<UsersDTO>> findPage(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                    @RequestParam(name = "linesPerPage", defaultValue = "24") Integer linesPerPage,
                                                    @RequestParam(name = "orderBy", defaultValue = "idUsers") String orderBy,
@@ -39,13 +39,13 @@ public class UsersResource {
     }
 
 
-    @GetMapping(value = {"/users/{id}"})
+    @GetMapping(value = {"/{id}"})
     public ResponseEntity<Users> find(@PathVariable Integer id) {
         Users obj = service.find(id);
         return ResponseEntity.ok().body(obj);
     }
 
-    @PostMapping("/users")
+    @PostMapping()
     public ResponseEntity<Users> insert(@Valid @RequestBody UsersDTO objDto) {
         Users obj = service.fromDTO(objDto);
         obj = service.insert(obj);
@@ -54,7 +54,7 @@ public class UsersResource {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping(value = {"/users/{id}"})
+    @PutMapping(value = {"/{id}"})
     public ResponseEntity<Users> update(@Valid @RequestBody UsersDTO usersDTO, @PathVariable Integer id) {
         Users users = service.fromDTO(usersDTO);
         users.setIdUsers(id);
@@ -62,7 +62,7 @@ public class UsersResource {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping(value = {"/users/{id}"})
+    @DeleteMapping(value = {"/{id}"})
     public ResponseEntity<Users> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.noContent().build();

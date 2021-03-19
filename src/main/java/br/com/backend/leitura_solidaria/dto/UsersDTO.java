@@ -3,6 +3,7 @@ package br.com.backend.leitura_solidaria.dto;
 import br.com.backend.leitura_solidaria.domain.Users;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
@@ -13,6 +14,8 @@ public class UsersDTO implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatório")
     @Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 a 80 caracteres")
     private String fullName;
+    @NotEmpty(message = "Preenchimento obrigatório")
+    @Email(message = "Email inválido")
     private String mail;
     private String password;
     private String urlImg;

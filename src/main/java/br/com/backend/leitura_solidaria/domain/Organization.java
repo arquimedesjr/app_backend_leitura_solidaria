@@ -33,7 +33,7 @@ public class Organization implements Serializable {
         this.fullName = fullName;
         this.mail = mail;
         this.cnpj = cnpj;
-        this.type = type.getCod();
+        this.type = (type == null) ? null : type.getCod();
     }
 
     @Override
