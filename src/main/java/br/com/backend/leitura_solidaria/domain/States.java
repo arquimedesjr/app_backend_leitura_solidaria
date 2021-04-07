@@ -14,9 +14,6 @@ public class States implements Serializable {
     private Integer id;
     private String name;
 
-    @OneToMany(mappedBy = "states")
-    private List<City> cityLis = new ArrayList<>();
-
     public States(){
     }
 
@@ -44,14 +41,6 @@ public class States implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public List<City> getCityLis() {
-        return cityLis;
-    }
-
-    public void setCityLis(List<City> cityLis) {
-        this.cityLis = cityLis;
     }
 
     public String getName() {

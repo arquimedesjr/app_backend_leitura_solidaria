@@ -21,6 +21,10 @@ public class Profile implements Serializable {
     @OneToMany(mappedBy = "profile")
     private List<Users> users = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "profile")
+    private List<Organization> organizations = new ArrayList<>();
+
     public Profile() {
     }
 
@@ -51,6 +55,14 @@ public class Profile implements Serializable {
 
     public void setUsers(List<Users> users) {
         this.users = users;
+    }
+
+    public List<Organization> getOrganizations() {
+        return organizations;
+    }
+
+    public void setOrganizations(List<Organization> organizations) {
+        this.organizations = organizations;
     }
 
     @Override

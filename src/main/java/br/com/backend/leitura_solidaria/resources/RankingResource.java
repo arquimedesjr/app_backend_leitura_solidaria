@@ -4,6 +4,7 @@ import br.com.backend.leitura_solidaria.domain.Ranking;
 import br.com.backend.leitura_solidaria.domain.Users;
 import br.com.backend.leitura_solidaria.services.RankingService;
 import br.com.backend.leitura_solidaria.services.UsersService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
+@Api(value = "API REST RANKING")
+@CrossOrigin(origins = "*")
 public class RankingResource {
 
     @Autowired

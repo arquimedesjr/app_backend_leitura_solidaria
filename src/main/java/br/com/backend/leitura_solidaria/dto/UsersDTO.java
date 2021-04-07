@@ -4,15 +4,14 @@ import br.com.backend.leitura_solidaria.domain.Organization;
 import br.com.backend.leitura_solidaria.domain.Profile;
 import br.com.backend.leitura_solidaria.domain.Users;
 import br.com.backend.leitura_solidaria.domain.enums.TypeUsers;
-import org.hibernate.validator.constraints.Length;
+import br.com.backend.leitura_solidaria.services.validation.UsersInsert;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@UsersInsert
 public class UsersDTO implements Serializable {
 
 
@@ -35,11 +34,15 @@ public class UsersDTO implements Serializable {
         password = users.getPassword();
         urlImg = users.getUrlImg();
         profile = users.getProfile();
-        partner = validOrganizationPartner(users.getOrganization());
-        ong = validOrganizationOng(users.getOrganization());
+        if(users.getOrganization()!=null){
+            partner = validOrganizationPartner(users.getOrganization());
+            ong = validOrganizationOng(users.getOrganization());
+        }
+
     }
 
     public HashMap<String, Object> validOrganizationPartner(Organization organization) {
+
         if (profile.getName().equals(TypeUsers.PARTNER.getDescription()) && organization.getProfile().getDescription().equals(profile.getName())) {
             partner.put("id", organization.getId());
             partner.put("name", organization.getFullName());

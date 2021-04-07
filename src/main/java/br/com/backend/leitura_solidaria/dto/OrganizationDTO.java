@@ -2,6 +2,8 @@ package br.com.backend.leitura_solidaria.dto;
 
 import br.com.backend.leitura_solidaria.domain.Address;
 import br.com.backend.leitura_solidaria.domain.Organization;
+import br.com.backend.leitura_solidaria.domain.Profile;
+import br.com.backend.leitura_solidaria.domain.enums.TypeUsers;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
@@ -18,10 +20,9 @@ public class OrganizationDTO implements Serializable {
     private String fullName;
     private String mail;
     private String cnpj;
-    private Integer type;
-    private List<Address> addressList = new ArrayList<>();
+    private Integer profile;
+    private List<Address> address = new ArrayList<>();
     private Set<String> phone = new HashSet<>();
-
 
     public OrganizationDTO() {
     }
@@ -42,20 +43,20 @@ public class OrganizationDTO implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getProfile() {
+        return profile;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setProfile(Integer profile) {
+        this.profile = profile;
     }
 
-    public List<Address> getAddressList() {
-        return addressList;
+    public List<Address> getAddress() {
+        return address;
     }
 
-    public void setAddressList(List<Address> addressList) {
-        this.addressList = addressList;
+    public void setAddress(List<Address> address) {
+        this.address = address;
     }
 
     public Set<String> getPhone() {

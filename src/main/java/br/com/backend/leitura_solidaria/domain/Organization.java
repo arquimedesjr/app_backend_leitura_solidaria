@@ -19,7 +19,7 @@ public class Organization implements Serializable {
     private Integer profile;
 
     @OneToMany(mappedBy = "organization")
-    private List<Address> addressList = new ArrayList<>();
+    private List<Address> address = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "PHONE")
@@ -93,12 +93,12 @@ public class Organization implements Serializable {
         this.profile = profile.getCod();
     }
 
-    public List<Address> getAddressList() {
-        return addressList;
+    public List<Address> getAddress() {
+        return address;
     }
 
-    public void setAddressList(List<Address> addressList) {
-        this.addressList = addressList;
+    public void setAddress(List<Address> address) {
+        this.address = address;
     }
 
     public Set<String> getPhone() {

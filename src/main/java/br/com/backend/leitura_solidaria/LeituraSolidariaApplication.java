@@ -19,8 +19,6 @@ public class LeituraSolidariaApplication implements CommandLineRunner {
     @Autowired
     private StatesRepository statesRepository;
     @Autowired
-    private CityRepository cityRepository;
-    @Autowired
     private AddressRepository addressRepository;
     @Autowired
     private OrganizationRepository organizationRepository;
@@ -38,15 +36,9 @@ public class LeituraSolidariaApplication implements CommandLineRunner {
         States st1 = new States(null, "Minhas Gerais");
         States st2 = new States(null, "São Paulo");
 
-        City ct1 = new City(null, "Urberlândia", st1);
-        City ct2 = new City(null, "São Paulo", st2);
-        City ct3 = new City(null, "Campinas", st2);
 
-        st1.getCityLis().add(ct1);
-        st2.getCityLis().addAll(Arrays.asList(ct2, ct3));
 
         statesRepository.saveAll(Arrays.asList(st1, st2));
-        cityRepository.saveAll(Arrays.asList(ct1, ct2, ct3));
 
         Profile profile = new Profile(TypeUsers.ONG.getCod(),TypeUsers.ONG.getDescription());
         Profile profile1 = new Profile(TypeUsers.PARTNER.getCod(),TypeUsers.PARTNER.getDescription());
@@ -61,11 +53,11 @@ public class LeituraSolidariaApplication implements CommandLineRunner {
         org1.getPhone().addAll(Arrays.asList("11948924982", "1120811446"));
         org2.getPhone().addAll(Arrays.asList("11948924982", "1120811446"));
 
-        Address address1 = new Address(null, "Rua flores", "300", "apto 303", "Jardim", "03014000", org1, ct1);
-        Address address2 = new Address(null, "Avenida Matos", "105", "sala 800", "Centro", "03014232", org1, ct2);
+        Address address1 = new Address(null, "Rua flores", "300", "apto 303", "Jardim", "03014000", org1, "Urberlândia");
+        Address address2 = new Address(null, "Avenida Matos", "105", "sala 800", "Centro", "03014232", org1, "São Paulo");
 
-        org1.getAddressList().addAll(Arrays.asList(address1, address2));
-        org2.getAddressList().addAll(Collections.singletonList(address1));
+        org1.getAddress().addAll(Arrays.asList(address1, address2));
+        org2.getAddress().addAll(Collections.singletonList(address1));
 
         organizationRepository.saveAll(Arrays.asList(org1,org2));
         addressRepository.saveAll(Arrays.asList(address1, address2));

@@ -1,7 +1,7 @@
 package br.com.backend.leitura_solidaria.services;
 
-import br.com.backend.leitura_solidaria.domain.Users;
-import br.com.backend.leitura_solidaria.repositories.UsersRepository;
+import br.com.backend.leitura_solidaria.domain.Profile;
+import br.com.backend.leitura_solidaria.repositories.ProfileRepository;
 import br.com.backend.leitura_solidaria.services.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,22 +15,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsersService {
+public class ProfileService {
 
     @Autowired
-    private UsersRepository repo;
+    private ProfileRepository repo;
 
-    public List<Users> findAll() {
+    public List<Profile> findAll() {
         return repo.findAll();
     }
 
-    public Users find(Integer id) {
-        Optional<Users> obj = repo.findById(id);
+    public Profile find(Integer id) {
+        Optional<Profile> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName()));
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Profile.class.getName()));
     }
 
-    public Users insert(Users obj) {
+    public Profile insert(Profile obj) {
         try {
             obj.setId(null);
             return repo.save(obj);
@@ -39,32 +39,16 @@ public class UsersService {
         }
     }
 
-    public Users update(Users obj) {
-        Users newObj = find(obj.getId());
-        updateData(newObj, obj);
-        return repo.save(newObj);
-    }
-
     public void delete(Integer id) {
-        Users obj = find(id);
+        Profile obj = find(id);
         repo.delete(obj);
     }
 
-    public Page<Users> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    public Page<Profile> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return repo.findAll(pageRequest);
     }
 
-    public void updateData(Users newObj, Users obj) {
-        newObj.setFullName(obj.getFullName());
-        newObj.setMail(obj.getMail());
-        newObj.setPassword(obj.getPassword());
-        newObj.setUrlImg(obj.getUrlImg());
-        newObj.setProfile(obj.getProfile());
-        if(obj.getProfile()!=null) {
-            newObj.setProfile(obj.getProfile());
-            newObj.setOrganization(obj.getOrganization());
-        }
-    }
+
 
 }

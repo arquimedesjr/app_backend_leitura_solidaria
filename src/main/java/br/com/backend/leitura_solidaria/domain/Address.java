@@ -11,27 +11,28 @@ public class Address implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idAddress;
+    private Integer id;
     private String street;
     private String number;
     private String complement;
     private String district;
     private String cep;
-
+    private String city;
+    
+    
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "organization_id")
     private Organization organization;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
+   
+    
 
     public Address() {
     }
 
-    public Address(Integer idAddress, String street, String number, String complement, String district, String cep, Organization organization, City city) {
-        this.idAddress = idAddress;
+    public Address(Integer id, String street, String number, String complement, String district, String cep, Organization organization, String city) {
+        this.id = id;
         this.street = street;
         this.number = number;
         this.complement = complement;
@@ -46,20 +47,20 @@ public class Address implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Address)) return false;
         Address address = (Address) o;
-        return getIdAddress().equals(address.getIdAddress());
+        return getId().equals(address.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getIdAddress());
+        return Objects.hash(getId());
     }
 
-    public Integer getIdAddress() {
-        return idAddress;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdAddress(Integer idAddress) {
-        this.idAddress = idAddress;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getStreet() {
@@ -110,11 +111,11 @@ public class Address implements Serializable {
         this.organization = organization;
     }
 
-    public City getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(City city) {
+    public void setCity(String city) {
         this.city = city;
     }
 }

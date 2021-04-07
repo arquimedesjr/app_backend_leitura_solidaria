@@ -1,10 +1,6 @@
 package br.com.backend.leitura_solidaria.domain;
 
-import br.com.backend.leitura_solidaria.domain.enums.TypeUsers;
-import org.hibernate.annotations.CollectionId;
-
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 import java.util.Objects;
 
