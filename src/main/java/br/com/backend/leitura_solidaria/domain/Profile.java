@@ -23,6 +23,7 @@ public class Profile implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "profile")
+    
     private List<Organization> organizations = new ArrayList<>();
 
     public Profile() {

@@ -80,6 +80,7 @@ public class OrganizationService {
         Optional<Profile> repoprofile = profileRepository.findById(obj.getProfile());
         if (repoprofile.isPresent())
             profile = new Profile(repoprofile.get().getId(), repoprofile.get().getName());
+
         Organization organization = new Organization(null, obj.getFullName(), obj.getMail(), obj.getCnpj(), profile);
         List<Address> address = obj.getAddress();
 

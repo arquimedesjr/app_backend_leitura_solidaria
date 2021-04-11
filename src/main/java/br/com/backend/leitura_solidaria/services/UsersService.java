@@ -1,6 +1,9 @@
 package br.com.backend.leitura_solidaria.services;
 
+import br.com.backend.leitura_solidaria.domain.Profile;
 import br.com.backend.leitura_solidaria.domain.Users;
+import br.com.backend.leitura_solidaria.dto.UsersDTO;
+import br.com.backend.leitura_solidaria.repositories.ProfileRepository;
 import br.com.backend.leitura_solidaria.repositories.UsersRepository;
 import br.com.backend.leitura_solidaria.services.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.services.exception.ObjectNotFoundException;
@@ -9,6 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +23,10 @@ public class UsersService {
 
     @Autowired
     private UsersRepository repo;
+    @Autowired
+    private BCryptPasswordEncoder pe;
+    @Autowired
+    private ProfileRepository profileRepository;
 
     public List<Users> findAll() {
         return repo.findAll();
@@ -33,6 +41,7 @@ public class UsersService {
     public Users insert(Users obj) {
         try {
             obj.setId(null);
+            obj.setPassword(pe.encode(obj.getPassword()));
             return repo.save(obj);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não foi possível inserir o usuário");

@@ -1,5 +1,7 @@
 package br.com.backend.leitura_solidaria.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,8 +16,10 @@ public class Users implements Serializable {
 
     @Column(unique = true)
     private String mail;
-    private String password;
     private String urlImg;
+
+    @JsonIgnore
+    private String password;
 
     @ManyToOne
     @JoinColumn(name = "profile_id")
