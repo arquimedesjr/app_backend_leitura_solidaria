@@ -1,5 +1,6 @@
 package br.com.backend.leitura_solidaria.domain;
 
+import br.com.backend.leitura_solidaria.domain.enums.Profiles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -7,6 +8,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+
 
 @Entity
 public class Users implements Serializable {
@@ -29,9 +33,13 @@ public class Users implements Serializable {
     @JoinColumn(name = "organization_id")
     private Organization organization;
 
-    public Users() {
-    }
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "PROFILES")
+    private Set<Integer> profiles = new HashSet<>();
 
+    public Users() {
+        addProfiles(Profiles.CLIENT);
+    }
     public Users(Integer id, String fullName, String mail, String password, String urlImg, Organization organization, Profile profile) {
         this.id = id;
         this.fullName = fullName;
@@ -40,6 +48,7 @@ public class Users implements Serializable {
         this.urlImg = urlImg;
         this.organization = organization;
         this.profile = profile;
+        addProfiles(Profiles.CLIENT);
     }
 
     public Organization getOrganization() {
@@ -80,6 +89,13 @@ public class Users implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Profiles> getProfiles(){
+        return profiles.stream().map(x -> Profiles.toenum(x)).collect(Collectors.toSet());
+    }
+    public void addProfiles(Profiles profiles){
+        this.profiles.add(profiles.getCod());
     }
 
     public String getUrlImg() {

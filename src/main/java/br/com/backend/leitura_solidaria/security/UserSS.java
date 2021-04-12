@@ -1,9 +1,14 @@
 package br.com.backend.leitura_solidaria.security;
 
+import br.com.backend.leitura_solidaria.domain.Profile;
+import br.com.backend.leitura_solidaria.domain.enums.Profiles;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserSS implements UserDetails {
 
@@ -15,11 +20,11 @@ public class UserSS implements UserDetails {
     public UserSS() {
     }
 
-    public UserSS(Integer id, String mail, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserSS(Integer id, String mail, String password, Set<Profiles> profiles) {
         this.id = id;
         this.mail = mail;
         this.password = password;
-        this.authorities = authorities;
+        this.authorities = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
     }
 
     public Integer getId() {
