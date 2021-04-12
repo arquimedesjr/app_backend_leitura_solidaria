@@ -4,7 +4,8 @@ public enum TypeUsers {
 
     ONG(1, "ONG"),
     USER(2, "Usuário"),
-    PARTNER(3, "Parceiro");
+    PARTNER(3, "Parceiro"),
+    ADMIN(4, "ADMIN");
 
     private int cod;
     private String description;

@@ -36,9 +36,9 @@ public class DBServices {
         Profile profile = new Profile(TypeUsers.ONG.getCod(),TypeUsers.ONG.getDescription());
         Profile profile1 = new Profile(TypeUsers.PARTNER.getCod(),TypeUsers.PARTNER.getDescription());
         Profile profile2 = new Profile(TypeUsers.USER.getCod(),TypeUsers.USER.getDescription());
+        Profile profile3 = new Profile(TypeUsers.ADMIN.getCod(),TypeUsers.ADMIN.getDescription());
 
-
-        profileRepository.saveAll(Arrays.asList(profile,profile1,profile2));
+        profileRepository.saveAll(Arrays.asList(profile,profile1,profile2,profile3));
 
         Organization org1 = new Organization(null, "Todos Pela Saúde LTDA", "saude@mail.com", "47241198000169", profile);
         Organization org2 = new Organization(null, "Uniformes LTDA", "uniformes@mail.com", "47241192000169", profile1);
@@ -60,7 +60,8 @@ public class DBServices {
         Users us1 = new Users(null, "Arquimedes Junior", "main@junior.com", pe.encode("4321"), "https:/teste.imagem.com", org1,profile);
         Users us2 = new Users(null, "João Batista", "main@josdaqao.com", pe.encode("4321"), "https:/teste.imagem.com", org1, profile1);
         Users us3 = new Users(null, "João Batista", "main@joasqsao.com", pe.encode("4321"), "https:/teste.imagem.com", org2, profile1);
+        Users us4 = new Users(null, "admin", "admin@admin.com", pe.encode("admin"), null, null, profile3);
 
-        usersRepository.saveAll(Arrays.asList(us1, us2, us3));
+        usersRepository.saveAll(Arrays.asList(us1, us2, us3,us4));
     }
 }

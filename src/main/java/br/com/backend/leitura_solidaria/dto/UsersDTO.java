@@ -5,6 +5,7 @@ import br.com.backend.leitura_solidaria.domain.Profile;
 import br.com.backend.leitura_solidaria.domain.Users;
 import br.com.backend.leitura_solidaria.domain.enums.TypeUsers;
 import br.com.backend.leitura_solidaria.services.validation.UsersInsert;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class UsersDTO implements Serializable {
     private Integer id;
     private String fullName;
     private String mail;
+    @JsonIgnore
     private String password;
     private String urlImg;
     private Profile profile;

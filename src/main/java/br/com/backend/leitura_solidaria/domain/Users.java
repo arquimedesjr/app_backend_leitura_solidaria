@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Users implements Serializable {
@@ -17,8 +19,6 @@ public class Users implements Serializable {
     @Column(unique = true)
     private String mail;
     private String urlImg;
-
-    @JsonIgnore
     private String password;
 
     @ManyToOne
