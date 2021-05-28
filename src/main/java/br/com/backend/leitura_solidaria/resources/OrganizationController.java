@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.lang.reflect.Type;
 
 @RestController
-@RequestMapping(value = "/organization/v1")
+@RequestMapping(value = "/v1/organization")
 @Api(value = "API REST ORGANIZATION")
 @CrossOrigin(origins = "*")
 public class OrganizationController {

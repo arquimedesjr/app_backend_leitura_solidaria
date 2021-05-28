@@ -1,6 +1,5 @@
 package br.com.backend.leitura_solidaria.services.impl;
 
-import br.com.backend.leitura_solidaria.domain.Address;
 import br.com.backend.leitura_solidaria.domain.Organization;
 import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.exception.ObjectNotFoundException;
