@@ -1,79 +1,23 @@
 package br.com.backend.leitura_solidaria.services;
 
-import br.com.backend.leitura_solidaria.domain.Profile;
 import br.com.backend.leitura_solidaria.domain.Users;
-import br.com.backend.leitura_solidaria.dto.UsersDTO;
-import br.com.backend.leitura_solidaria.repositories.ProfileRepository;
-import br.com.backend.leitura_solidaria.repositories.UsersRepository;
-import br.com.backend.leitura_solidaria.services.exception.DataIntegrityException;
-import br.com.backend.leitura_solidaria.services.exception.ObjectNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class UsersService {
+public interface UsersService {
 
-    @Autowired
-    private UsersRepository repo;
-    @Autowired
-    private BCryptPasswordEncoder pe;
-    @Autowired
-    private ProfileRepository profileRepository;
+    List<Users> findAll(ModelMapper mapper);
 
-    public List<Users> findAll() {
-        return repo.findAll();
-    }
+    Users find(Integer id,  ModelMapper mapper);
 
-    public Users find(Integer id) {
-        Optional<Users> obj = repo.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName()));
-    }
+    UsersEntity insert(UsersEntity obj);
 
-    public Users insert(Users obj) {
-        try {
-            obj.setId(null);
-            obj.setPassword(pe.encode(obj.getPassword()));
-            return repo.save(obj);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não foi possível inserir o usuário");
-        }
-    }
+    void update(UsersEntity obj);
 
-    public Users update(Users obj) {
-        Users newObj = find(obj.getId());
-        updateData(newObj, obj);
-        return repo.save(newObj);
-    }
+    void delete(Integer id);
 
-    public void delete(Integer id) {
-        Users obj = find(id);
-        repo.delete(obj);
-    }
-
-    public Page<Users> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return repo.findAll(pageRequest);
-    }
-
-    public void updateData(Users newObj, Users obj) {
-        newObj.setFullName(obj.getFullName());
-        newObj.setMail(obj.getMail());
-        newObj.setPassword(obj.getPassword());
-        newObj.setUrlImg(obj.getUrlImg());
-        newObj.setProfile(obj.getProfile());
-        if(obj.getProfile()!=null) {
-            newObj.setProfile(obj.getProfile());
-            newObj.setOrganization(obj.getOrganization());
-        }
-    }
-
+    Page<UsersEntity> findPage(Integer page, Integer linesPerPage, String orderBy, String direction);
 }

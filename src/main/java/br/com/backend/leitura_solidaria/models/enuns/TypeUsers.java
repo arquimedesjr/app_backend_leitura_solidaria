@@ -1,13 +1,15 @@
-package br.com.backend.leitura_solidaria.domain.enums;
+package br.com.backend.leitura_solidaria.models.enuns;
 
 public enum TypeUsers {
 
     ONG(1, "ONG"),
-    USER(2, "Usuário"),
-    PARTNER(3, "Parceiro");
+    USER(2, "Usuario"),
+    PARTNER(3, "Parceiro"),
+    ADMIN(4, "ROLES_ADMIN"),
+    CLIENT(5, "ROLES_CLIENT");
 
-    private int cod;
-    private String description;
+    private final int cod;
+    private final String description;
 
     TypeUsers(int cod, String description) {
         this.cod = cod;

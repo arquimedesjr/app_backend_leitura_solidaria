@@ -1,6 +1,6 @@
 package br.com.backend.leitura_solidaria.config;
 
-import br.com.backend.leitura_solidaria.services.DBServices;
+import br.com.backend.leitura_solidaria.services.impl.DBServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Profile;
 public class DevConfig {
 
     @Autowired
-    private DBServices dbServices;
+    private DBServicesImpl dbServicesImpl;
 
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String stratefy;
@@ -21,7 +21,7 @@ public class DevConfig {
     public boolean instantiateDatabase() {
 
         if (!"create".equals(stratefy))
-            dbServices.instantiateTestDataBase();
+            dbServicesImpl.instantiateTestDataBase();
         return true;
     }
 }

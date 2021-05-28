@@ -1,6 +1,6 @@
 package br.com.backend.leitura_solidaria.config;
 
-import br.com.backend.leitura_solidaria.services.DBServices;
+import br.com.backend.leitura_solidaria.services.impl.DBServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Profile;
 public class TestConfig {
 
     @Autowired
-    private DBServices dbServices;
+    private DBServicesImpl dbServicesImpl;
 
     @Bean
     public boolean instantiateDatabase(){
-        dbServices.instantiateTestDataBase();
+        dbServicesImpl.instantiateTestDataBase();
         return true;
     }
 }

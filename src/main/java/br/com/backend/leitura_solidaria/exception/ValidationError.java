@@ -1,11 +1,11 @@
-package br.com.backend.leitura_solidaria.resources.exception;
+package br.com.backend.leitura_solidaria.exception;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidationError extends StandarError{
+public class ValidationError extends StandarError {
 
-    private List<FieldMessage> errors = new ArrayList<>();
+    private final List<FieldMessage> errors = new ArrayList<>();
 
     public ValidationError(Integer status, String msg, Long timeStamp) {
         super(status, msg, timeStamp);

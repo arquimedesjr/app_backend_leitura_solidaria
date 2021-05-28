@@ -6,18 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Profile {
+public class OrganizationUser {
 
     @JsonProperty("id")
     private Integer id;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("name")
+    private String name;
 
 }

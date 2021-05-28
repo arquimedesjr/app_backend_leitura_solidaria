@@ -1,111 +1,24 @@
 package br.com.backend.leitura_solidaria.domain;
 
-import br.com.backend.leitura_solidaria.domain.enums.TypeUsers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 
-@Entity
-public class Organization implements Serializable {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Organization {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String fullName;
+    private String name;
     private String mail;
-    private String cnpj;
-    private Integer profile;
+    private String numCnpj;
+    private Profile profile;
+    private List<Address> address;
+    private Set<String> phones;
 
-    @OneToMany(mappedBy = "organization")
-    private List<Address> address = new ArrayList<>();
-
-    @ElementCollection
-    @CollectionTable(name = "PHONE")
-    private Set<String> phone = new HashSet<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "organization")
-    private List<Users> users = new ArrayList<>();
-
-    public Organization() {
-    }
-
-    public Organization(Integer id, String fullName, String mail, String cnpj, Profile profile) {
-        this.id = id;
-        this.fullName = fullName;
-        this.mail = mail;
-        this.cnpj = cnpj;
-        this.profile = profile.getId();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Organization)) return false;
-        Organization that = (Organization) o;
-        return getId().equals(that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
-
-    public TypeUsers getProfile() {
-        return TypeUsers.toenum(profile);
-    }
-
-    public void setProfile(TypeUsers profile) {
-        this.profile = profile.getCod();
-    }
-
-    public List<Address> getAddress() {
-        return address;
-    }
-
-    public void setAddress(List<Address> address) {
-        this.address = address;
-    }
-
-    public Set<String> getPhone() {
-        return phone;
-    }
-
-    public void setPhone(Set<String> phone) {
-        this.phone = phone;
-    }
 }

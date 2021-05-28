@@ -1,7 +1,5 @@
-package br.com.backend.leitura_solidaria.resources.exception;
+package br.com.backend.leitura_solidaria.exception;
 
-import br.com.backend.leitura_solidaria.services.exception.DataIntegrityException;
-import br.com.backend.leitura_solidaria.services.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

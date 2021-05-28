@@ -1,4 +1,5 @@
-package br.com.backend.leitura_solidaria.services.exception;
+package br.com.backend.leitura_solidaria.exception;
+
 
 public class DataIntegrityException extends RuntimeException {
 
