@@ -1,6 +1,5 @@
 package br.com.backend.leitura_solidaria.services;
 
-import br.com.backend.leitura_solidaria.domain.Organization;
 import br.com.backend.leitura_solidaria.models.entity.OrganizationEntity;
 import org.springframework.data.domain.Page;
 

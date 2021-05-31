@@ -1,12 +1,16 @@
 package br.com.backend.leitura_solidaria.services.impl;
 
-import br.com.backend.leitura_solidaria.domain.OrganizationUser;
-import br.com.backend.leitura_solidaria.domain.Profile;
-import br.com.backend.leitura_solidaria.domain.Users;
+import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
+import br.com.backend.leitura_solidaria.domain.response.OrganizationUser;
+import br.com.backend.leitura_solidaria.domain.response.Profile;
+import br.com.backend.leitura_solidaria.domain.response.Users;
 import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.exception.ObjectNotFoundException;
+import br.com.backend.leitura_solidaria.models.entity.OrganizationEntity;
 import br.com.backend.leitura_solidaria.models.entity.ProfileEntity;
 import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
+import br.com.backend.leitura_solidaria.models.repositories.OrganizationRepository;
+import br.com.backend.leitura_solidaria.models.repositories.ProfileRepository;
 import br.com.backend.leitura_solidaria.models.repositories.UsersRepository;
 import br.com.backend.leitura_solidaria.services.UsersService;
 import lombok.AllArgsConstructor;
@@ -17,7 +21,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +30,8 @@ import java.util.Optional;
 public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
+    private final OrganizationRepository organizationRepository;
+    private final ProfileRepository profileRepository;
 
     @Override
     public List<Users> findAll(ModelMapper mapper) {
@@ -37,9 +42,15 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users find(Integer id, ModelMapper mapper) {
         Optional<UsersEntity> obj = usersRepository.findById(id);
-        Optional<Users> users = Optional.ofNullable(verifyOrganization(obj.get(), mapper));
-        return users.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName()));
+
+        if (obj.isPresent()) {
+            return verifyOrganization(obj.get(), mapper);
+        }
+
+        throw new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName());
+
+
     }
 
     public UsersEntity find(Integer id) {
@@ -48,11 +59,35 @@ public class UsersServiceImpl implements UsersService {
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName()));
     }
 
+    public OrganizationEntity findOrg(Integer id) {
+        Optional<OrganizationEntity> obj = organizationRepository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + OrganizationEntity.class.getName()));
+    }
+
+    public ProfileEntity findProfile(Integer id) {
+        Optional<ProfileEntity> obj = profileRepository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + ProfileEntity.class.getName()));
+    }
+
     @Override
-    public UsersEntity insert(UsersEntity obj) {
+    public Users insert(UsersRequest obj, ModelMapper mapper) {
         try {
-            obj.setId(null);
-            return usersRepository.save(obj);
+
+            OrganizationEntity org = findOrg(obj.getOrganization());
+
+            UsersEntity objEntity = UsersEntity.builder()
+                    .fullName(obj.getFullName())
+                    .mail(obj.getMail())
+                    .organization(org)
+                    .profile(org.getProfile())
+                    .password(obj.getPassword())
+                    .urlImg(obj.getUrlImg())
+                    .build();
+
+            return mapper.map(usersRepository.save(objEntity), Users.class);
+
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não foi possível inserir o usuário");
         }

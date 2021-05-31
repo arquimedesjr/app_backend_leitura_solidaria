@@ -1,4 +1,4 @@
-package br.com.backend.leitura_solidaria.domain;
+package br.com.backend.leitura_solidaria.domain.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

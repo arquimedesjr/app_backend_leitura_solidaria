@@ -1,6 +1,7 @@
 package br.com.backend.leitura_solidaria.services;
 
-import br.com.backend.leitura_solidaria.domain.Users;
+import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
+import br.com.backend.leitura_solidaria.domain.response.Users;
 import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,7 @@ public interface UsersService {
 
     Users find(Integer id,  ModelMapper mapper);
 
-    UsersEntity insert(UsersEntity obj);
+    Users insert(UsersRequest obj, ModelMapper mapper);
 
     void update(UsersEntity obj);
 

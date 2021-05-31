@@ -1,6 +1,6 @@
 package br.com.backend.leitura_solidaria.services.validation;
 
-import br.com.backend.leitura_solidaria.domain.Users;
+import br.com.backend.leitura_solidaria.domain.response.Users;
 import br.com.backend.leitura_solidaria.exception.FieldMessage;
 import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
 import br.com.backend.leitura_solidaria.models.repositories.UsersRepository;

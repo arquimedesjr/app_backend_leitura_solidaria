@@ -14,21 +14,24 @@ import javax.persistence.*;
 public class UsersEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
+    @Column(name = "cod_user")
     private Integer id;
+    @Column(name = "full_name")
     private String fullName;
-
-    @Column(unique = true)
+    @Column(name = "mail", unique = true)
     private String mail;
+    @Column(name = "url_img")
     private String urlImg;
+    @Column(name = "password")
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "profile_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cod_profile")
     private ProfileEntity profile;
 
-    @ManyToOne
-    @JoinColumn(name = "organization_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cod_organization")
     private OrganizationEntity organization;
 
 }

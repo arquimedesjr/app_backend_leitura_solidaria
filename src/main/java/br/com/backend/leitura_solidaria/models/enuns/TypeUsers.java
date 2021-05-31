@@ -3,8 +3,8 @@ package br.com.backend.leitura_solidaria.models.enuns;
 public enum TypeUsers {
 
     ONG(1, "ONG"),
-    USER(2, "Usuario"),
-    PARTNER(3, "Parceiro"),
+    USER(2, "USER"),
+    PARTNER(3, "PARTNER"),
     ADMIN(4, "ROLES_ADMIN"),
     CLIENT(5, "ROLES_CLIENT");
 

@@ -1,4 +1,4 @@
-package br.com.backend.leitura_solidaria.domain;
+package br.com.backend.leitura_solidaria.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

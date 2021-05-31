@@ -1,6 +1,6 @@
 package br.com.backend.leitura_solidaria.services.impl;
 
-import br.com.backend.leitura_solidaria.domain.Organization;
+import br.com.backend.leitura_solidaria.domain.response.Organization;
 import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.exception.ObjectNotFoundException;
 import br.com.backend.leitura_solidaria.models.entity.AddressEntity;
@@ -71,9 +71,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 
     public void hasAddress(OrganizationEntity obj) {
-        if (!obj.getAddressEntities().isEmpty()) {
+        if (!obj.getAddress().isEmpty()) {
 
-            obj.getAddressEntities().forEach(address -> {
+            obj.getAddress().forEach(address -> {
                 AddressEntity byStreetAndNumber = addressRepository.findByStreetAndNumber(address.getStreet(), address.getNumber());
                 if (byStreetAndNumber != null)
                     addressRepository.save(byStreetAndNumber);

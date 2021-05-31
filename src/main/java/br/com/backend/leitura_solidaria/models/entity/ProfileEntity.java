@@ -15,14 +15,9 @@ import java.util.List;
 public class ProfileEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cod_profile")
     private Integer id;
+    @Column(name = "type")
     private String type;
-
-    @OneToMany(mappedBy = "profile")
-    private List<UsersEntity> users;
-
-    @OneToMany(mappedBy = "profile")
-    private List<OrganizationEntity> organization;
 
 }

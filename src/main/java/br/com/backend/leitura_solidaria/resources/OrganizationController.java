@@ -1,6 +1,6 @@
 package br.com.backend.leitura_solidaria.resources;
 
-import br.com.backend.leitura_solidaria.domain.Organization;
+import br.com.backend.leitura_solidaria.domain.response.Organization;
 import br.com.backend.leitura_solidaria.models.entity.OrganizationEntity;
 import br.com.backend.leitura_solidaria.services.impl.OrganizationServiceImpl;
 import io.swagger.annotations.Api;
@@ -52,7 +52,7 @@ public class OrganizationController {
 
         obj = mapper.map(obj, (Type) OrganizationEntity.class);
 
-        return ServletUriComponentsBuilder.fromCurrentRequest()
+        return ServletUriComponentsBuilder.fromCurrentRequestUri()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
     }
 
