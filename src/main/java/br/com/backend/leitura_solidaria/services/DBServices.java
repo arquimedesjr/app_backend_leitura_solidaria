@@ -4,5 +4,4 @@ public interface DBServices {
 
     void instantiateTestDataBase();
 
-    void dropDatabase();
 }

@@ -52,17 +52,8 @@ public class DBServicesImpl implements DBServices {
 
         UsersEntity us1 = UsersEntity.builder().id(null).fullName("Arquimedes Junior").mail("main@junior.com").password("4321").urlImg("https:/teste.imagem.com").profile(org1.getProfile()).organization(org1).build();
         UsersEntity us2 = UsersEntity.builder().id(null).fullName("João Batista").mail("main@josdaqao.com").password("4321").urlImg("https:/teste.imagem.com").profile(org2.getProfile()).organization(org2).build();
-        UsersEntity us3 = UsersEntity.builder().id(null).fullName("admin").mail("admin@admin.com").password("admin").profile(profile5).urlImg(null).organization(null).build();
+        UsersEntity us4 = UsersEntity.builder().id(null).fullName("admin").mail("admin@admin.com").password("admin").profile(profile5).urlImg(null).organization(null).build();
 
-        usersRepository.saveAll(Arrays.asList(us1, us2, us3));
-    }
-
-    @Override
-    public void dropDatabase() {
-        usersRepository.deleteAll();
-        addressRepository.deleteAll();
-        organizationRepository.deleteAll();
-        profileRepository.deleteAll();
-
+        usersRepository.saveAll(Arrays.asList(us1, us2, us4));
     }
 }

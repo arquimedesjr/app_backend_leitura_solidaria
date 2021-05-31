@@ -31,7 +31,6 @@ public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
     private final OrganizationRepository organizationRepository;
-    private final ProfileRepository profileRepository;
 
     @Override
     public List<Users> findAll(ModelMapper mapper) {
@@ -63,12 +62,6 @@ public class UsersServiceImpl implements UsersService {
         Optional<OrganizationEntity> obj = organizationRepository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + OrganizationEntity.class.getName()));
-    }
-
-    public ProfileEntity findProfile(Integer id) {
-        Optional<ProfileEntity> obj = profileRepository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + ProfileEntity.class.getName()));
     }
 
     @Override
@@ -124,15 +117,14 @@ public class UsersServiceImpl implements UsersService {
         List<Users> users = new LinkedList<>();
 
         for (UsersEntity entity : usersList) {
-            if (entity.getOrganization() != null) {
-                users.add(verifyOrganization(entity, mapper));
-            }
+            users.add(verifyOrganization(entity, mapper));
         }
         return users;
     }
 
     public Users verifyOrganization(UsersEntity entity, ModelMapper mapper) {
-        if (entity.getOrganization().getProfile().getType().equals("ONG")) {
+
+        if (entity.getOrganization() != null && entity.getOrganization().getProfile().getType().equals("ONG")) {
             return Users.builder()
                     .ong(mapper.map(entity.getOrganization(), OrganizationUser.class))
                     .urlImg(entity.getUrlImg())
@@ -144,7 +136,7 @@ public class UsersServiceImpl implements UsersService {
                     .mail(entity.getMail())
                     .build();
 
-        } else if (entity.getOrganization().getProfile().getType().equals("PARTNER")) {
+        } else if (entity.getOrganization() != null && entity.getOrganization().getProfile().getType().equals("PARTNER")) {
             return Users.builder()
                     .ong(null)
                     .urlImg(entity.getUrlImg())
@@ -167,6 +159,7 @@ public class UsersServiceImpl implements UsersService {
                     .mail(entity.getMail())
                     .build();
         }
-    }
 
+    }
 }
+
