@@ -11,6 +11,7 @@ import br.com.backend.leitura_solidaria.models.repositories.ProfileRepository;
 import br.com.backend.leitura_solidaria.models.repositories.UsersRepository;
 import br.com.backend.leitura_solidaria.services.DBServices;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -25,6 +26,7 @@ public class DBServicesImpl implements DBServices {
     private final AddressRepository addressRepository;
     private final OrganizationRepository organizationRepository;
     private final ProfileRepository profileRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public void instantiateTestDataBase() {
@@ -50,10 +52,9 @@ public class DBServicesImpl implements DBServices {
         organizationRepository.saveAll(Arrays.asList(org1, org2));
         addressRepository.saveAll(Arrays.asList(address1, address2));
 
-        UsersEntity us1 = UsersEntity.builder().id(null).fullName("Arquimedes Junior").mail("main@junior.com").password("4321").urlImg("https:/teste.imagem.com").profile(org1.getProfile()).organization(org1).build();
-        UsersEntity us2 = UsersEntity.builder().id(null).fullName("João Batista").mail("main@josdaqao.com").password("4321").urlImg("https:/teste.imagem.com").profile(org2.getProfile()).organization(org2).build();
-        UsersEntity us4 = UsersEntity.builder().id(null).fullName("admin").mail("admin@admin.com").password("admin").profile(profile5).urlImg(null).organization(null).build();
-
+        UsersEntity us1 = UsersEntity.builder().id(null).fullName("Arquimedes Junior").mail("main@junior.com").password(bCryptPasswordEncoder.encode("4321")).urlImg("https:/teste.imagem.com").profile(org1.getProfile()).organization(org1).build();
+        UsersEntity us2 = UsersEntity.builder().id(null).fullName("João Batista").mail("main@josdaqao.com").password(bCryptPasswordEncoder.encode("4321")).urlImg("https:/teste.imagem.com").profile(org2.getProfile()).organization(org2).build();
+        UsersEntity us4 = UsersEntity.builder().id(null).fullName("admin").mail("admin@admin.com").password(bCryptPasswordEncoder.encode("admin")).profile(profile5).urlImg(null).organization(null).build();
         usersRepository.saveAll(Arrays.asList(us1, us2, us4));
     }
 }

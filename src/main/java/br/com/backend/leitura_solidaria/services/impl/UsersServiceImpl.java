@@ -7,10 +7,8 @@ import br.com.backend.leitura_solidaria.domain.response.Users;
 import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.exception.ObjectNotFoundException;
 import br.com.backend.leitura_solidaria.models.entity.OrganizationEntity;
-import br.com.backend.leitura_solidaria.models.entity.ProfileEntity;
 import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
 import br.com.backend.leitura_solidaria.models.repositories.OrganizationRepository;
-import br.com.backend.leitura_solidaria.models.repositories.ProfileRepository;
 import br.com.backend.leitura_solidaria.models.repositories.UsersRepository;
 import br.com.backend.leitura_solidaria.services.UsersService;
 import lombok.AllArgsConstructor;
@@ -19,6 +17,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -31,6 +30,7 @@ public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
     private final OrganizationRepository organizationRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<Users> findAll(ModelMapper mapper) {
@@ -75,7 +75,7 @@ public class UsersServiceImpl implements UsersService {
                     .mail(obj.getMail())
                     .organization(org)
                     .profile(org.getProfile())
-                    .password(obj.getPassword())
+                    .password(bCryptPasswordEncoder.encode(obj.getPassword()))
                     .urlImg(obj.getUrlImg())
                     .build();
 

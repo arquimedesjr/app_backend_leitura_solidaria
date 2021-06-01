@@ -17,7 +17,10 @@ public class ProfileEntity extends BaseEntity {
     @Id
     @Column(name = "cod_profile")
     private Integer id;
+
     @Column(name = "type")
     private String type;
+
+
 
 }
