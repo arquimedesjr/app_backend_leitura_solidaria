@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -40,8 +41,9 @@ public class UsersServiceTest {
     ProfileRepository profileRepository;
     @Autowired
     ModelMapper mapper;
-    @Autowired
+    @MockBean
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
     UsersService service;
     DBServices dbServices;
 
@@ -61,7 +63,7 @@ public class UsersServiceTest {
 
         String json = new ObjectMapper().writeValueAsString(users);
 
-        String jsonExpect = "[{\"id\":15,\"name\":\"Arquimedes Junior\",\"mail\":\"main@junior.com\",\"url_image\":\"https:/teste.imagem.com\",\"profiles\":{\"id\":1,\"type\":\"ONG\"},\"ong\":{\"id\":9,\"name\":\"Todos Pela Saude LTDA\"},\"partner\":null},{\"id\":16,\"name\":\"João Batista\",\"mail\":\"main@josdaqao.com\",\"url_image\":\"https:/teste.imagem.com\",\"profiles\":{\"id\":3,\"type\":\"PARTNER\"},\"ong\":null,\"partner\":{\"id\":10,\"name\":\"Uniformes LTDA\"}},{\"id\":17,\"name\":\"admin\",\"mail\":\"admin@admin.com\",\"url_image\":null,\"profiles\":{\"id\":4,\"type\":\"ROLES_ADMIN\"},\"ong\":null,\"partner\":null}]";
+        String jsonExpect = "[{\"id\":15,\"name\":\"Arquimedes Junior\",\"mail\":\"main@junior.com\",\"url_image\":\"https:/teste.imagem.com\",\"profiles\":{\"id\":1,\"type\":\"ONG\"},\"ong\":{\"id\":9,\"name\":\"Todos Pela Saude LTDA\"},\"partner\":null},{\"id\":16,\"name\":\"João Batista\",\"mail\":\"main@josdaqao.com\",\"url_image\":\"https:/teste.imagem.com\",\"profiles\":{\"id\":3,\"type\":\"PARTNER\"},\"ong\":null,\"partner\":{\"id\":10,\"name\":\"Uniformes LTDA\"}},{\"id\":17,\"name\":\"admin\",\"mail\":\"admin@admin.com\",\"url_image\":null,\"profiles\":{\"id\":4,\"type\":\"ADMIN\"},\"ong\":null,\"partner\":null}]";
 
         assertThat(json).isEqualTo(jsonExpect);
     }

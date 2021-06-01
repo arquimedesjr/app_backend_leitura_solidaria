@@ -4,6 +4,7 @@ import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
 import br.com.backend.leitura_solidaria.domain.response.OrganizationUser;
 import br.com.backend.leitura_solidaria.domain.response.Profile;
 import br.com.backend.leitura_solidaria.domain.response.Users;
+import br.com.backend.leitura_solidaria.security.JWTUtil;
 import br.com.backend.leitura_solidaria.services.UsersService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -12,13 +13,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -30,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@WebMvcTest(UsersController.class)
+@WebMvcTest(controllers = UsersController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class UsersControllerTest {
     static String USER_API = "/v1/users";
@@ -41,12 +49,16 @@ public class UsersControllerTest {
     @MockBean
     UsersService service;
 
+    @MockBean
+    JWTUtil jwtUtil;
+
     @Autowired
     ModelMapper mapper;
 
     @Test
     @DisplayName("Deve retornar codigo 200 para o API que busca todos os usuarios")
     public void deveRetornarGetParaTodosCode200() throws Exception {
+
 
         BDDMockito.given(service.findAll(mapper)).willReturn(buildUsers());
 
@@ -83,7 +95,7 @@ public class UsersControllerTest {
 
         UsersRequest arquimedes_junior = UsersRequest.builder().fullName("Arquimedes Junior").mail("mail@mail.com.br").organization(1).urlImg(null).password("2131").build();
         String json = new ObjectMapper().writeValueAsString(arquimedes_junior);
-        BDDMockito.given(service.insert(arquimedes_junior,mapper)).willReturn(buildUsers().get(0));
+        BDDMockito.given(service.insert(arquimedes_junior, mapper)).willReturn(buildUsers().get(0));
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .post(USER_API)

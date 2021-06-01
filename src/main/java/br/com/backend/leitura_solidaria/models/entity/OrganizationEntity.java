@@ -25,7 +25,7 @@ public class OrganizationEntity extends BaseEntity {
     @Column(name = "num_cnpj")
     private String numCnpj;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "cod_profile")
     private ProfileEntity profile;
 

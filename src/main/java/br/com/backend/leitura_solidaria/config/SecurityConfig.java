@@ -3,9 +3,11 @@ package br.com.backend.leitura_solidaria.config;
 import br.com.backend.leitura_solidaria.security.JWTAuthenticationFilter;
 import br.com.backend.leitura_solidaria.security.JWTAuthorizationFilter;
 import br.com.backend.leitura_solidaria.security.JWTUtil;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,12 +30,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private Environment env;
+    private  Environment env;
     @Autowired
     private JWTUtil jwtUtil;
 
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
+            "/auth/forgot/**",
     };
 
     @Override

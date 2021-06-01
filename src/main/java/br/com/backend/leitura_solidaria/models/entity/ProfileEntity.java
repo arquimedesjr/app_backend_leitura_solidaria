@@ -2,8 +2,10 @@ package br.com.backend.leitura_solidaria.models.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

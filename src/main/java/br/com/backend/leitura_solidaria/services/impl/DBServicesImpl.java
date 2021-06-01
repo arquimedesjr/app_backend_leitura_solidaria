@@ -45,12 +45,13 @@ public class DBServicesImpl implements DBServices {
         OrganizationEntity org1 = OrganizationEntity.builder().id(null).name("Todos Pela Saude LTDA").mail("saude@mail.com")
                 .numCnpj("47241198000169").phones(new HashSet<>(Arrays.asList("11948924982", "1120811446")))
                 .profile(profile1).address(Arrays.asList(address1, address2)).build();
+
         OrganizationEntity org2 = OrganizationEntity.builder().id(null).name("Uniformes LTDA").mail("uniformes@mail.com")
                 .numCnpj("47241198000169").profile(profile2).phones(new HashSet<>(Arrays.asList("11948924982", "1120811446")))
                 .address(Collections.singletonList(address1)).build();
 
-        organizationRepository.saveAll(Arrays.asList(org1, org2));
         addressRepository.saveAll(Arrays.asList(address1, address2));
+        organizationRepository.saveAll(Arrays.asList(org1, org2));
 
         UsersEntity us1 = UsersEntity.builder().id(null).fullName("Arquimedes Junior").mail("main@junior.com").password(bCryptPasswordEncoder.encode("4321")).urlImg("https:/teste.imagem.com").profile(org1.getProfile()).organization(org1).build();
         UsersEntity us2 = UsersEntity.builder().id(null).fullName("João Batista").mail("main@josdaqao.com").password(bCryptPasswordEncoder.encode("4321")).urlImg("https:/teste.imagem.com").profile(org2.getProfile()).organization(org2).build();

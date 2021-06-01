@@ -2,11 +2,11 @@ package br.com.backend.leitura_solidaria.models.enuns;
 
 public enum TypeUsers {
 
-    ONG(1, "ROLES_ONG"),
-    USER(2, "ROLES_USER"),
-    PARTNER(3, "ROLES_PARTNER"),
-    ADMIN(4, "ROLES_ADMIN"),
-    CLIENT(5, "ROLES_CLIENT");
+    ONG(1, "ONG"),
+    USER(2, "USER"),
+    PARTNER(3, "PARTNER"),
+    ADMIN(4, "ADMIN"),
+    CLIENT(5, "CLIENT");
 
     private final int cod;
     private final String description;
