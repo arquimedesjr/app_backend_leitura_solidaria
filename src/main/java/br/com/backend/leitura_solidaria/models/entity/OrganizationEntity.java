@@ -3,7 +3,8 @@ package br.com.backend.leitura_solidaria.models.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -11,7 +12,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "tborganization")
+@Table(name = "tb_organization")
 public class OrganizationEntity extends BaseEntity {
 
     @Id
@@ -33,7 +34,7 @@ public class OrganizationEntity extends BaseEntity {
     private List<AddressEntity> address;
 
     @ElementCollection
-    @CollectionTable(name = "phones")
+    @CollectionTable(name = "tb_phones")
     private Set<String> phones;
 
 }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "tbusers")
+@Table(name = "tb_users")
 public class UsersEntity extends BaseEntity {
 
     @Id

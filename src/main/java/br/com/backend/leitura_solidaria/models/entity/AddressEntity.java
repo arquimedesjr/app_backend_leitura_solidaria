@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "tbaddress")
+@Table(name = "tb_address")
 public class AddressEntity extends BaseEntity {
 
     @Id

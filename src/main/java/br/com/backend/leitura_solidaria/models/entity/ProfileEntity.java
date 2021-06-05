@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "tbprofile")
+@Table(name = "tb_profile")
 public class ProfileEntity extends BaseEntity {
 
     @Id
