@@ -1,10 +1,7 @@
 package br.com.backend.leitura_solidaria.services.impl;
 
-import br.com.backend.leitura_solidaria.domain.response.Profile;
-import br.com.backend.leitura_solidaria.models.entity.ProfileEntity;
 import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
 import br.com.backend.leitura_solidaria.models.enuns.TypeUsers;
-import br.com.backend.leitura_solidaria.models.repositories.ProfileRepository;
 import br.com.backend.leitura_solidaria.models.repositories.UsersRepository;
 import br.com.backend.leitura_solidaria.security.UserSS;
 import lombok.AllArgsConstructor;
