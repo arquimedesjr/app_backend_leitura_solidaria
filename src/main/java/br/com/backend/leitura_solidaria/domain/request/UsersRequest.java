@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UsersRequest {
 
-    @JsonProperty("id")
-    private Integer id;
     @JsonProperty("full_name")
     private String fullName;
     @JsonProperty("mail")

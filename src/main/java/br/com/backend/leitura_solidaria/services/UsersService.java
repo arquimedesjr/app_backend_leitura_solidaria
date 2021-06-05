@@ -16,7 +16,7 @@ public interface UsersService {
 
     Users insert(UsersRequest obj, ModelMapper mapper);
 
-    void update(UsersEntity obj);
+    void update(UsersRequest obj, Integer id);
 
     void delete(Integer id);
 

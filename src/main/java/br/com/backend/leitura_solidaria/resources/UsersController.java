@@ -53,9 +53,8 @@ public class UsersController {
 
     @PutMapping(value = {"/{id}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Users obj, @PathVariable Integer id) {
-        obj.setId(id);
-        service.update(mapper.map(obj, UsersEntity.class));
+    public void update(@Valid @RequestBody UsersRequest obj, @PathVariable Integer id) {
+        service.update(obj, id);
     }
 
     @DeleteMapping(value = {"/{id}"})
@@ -63,6 +62,5 @@ public class UsersController {
     public void delete(@PathVariable Integer id) {
         service.delete(id);
     }
-
 
 }

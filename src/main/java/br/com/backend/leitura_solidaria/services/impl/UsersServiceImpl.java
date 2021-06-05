@@ -87,15 +87,17 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public void update(UsersEntity obj) {
-        UsersEntity newObj = find(obj.getId());
+    public void update(UsersRequest obj, Integer id) {
+        UsersEntity newObj = find(id);
+
+        OrganizationEntity org = findOrg(obj.getOrganization());
 
         usersRepository.save(UsersEntity.builder()
                 .id(newObj.getId())
                 .fullName(obj.getFullName())
                 .mail(obj.getMail())
-                .organization(newObj.getOrganization())
-                .profile(newObj.getOrganization().getProfile())
+                .organization(org)
+                .profile(org.getProfile())
                 .password(obj.getPassword())
                 .build());
     }
