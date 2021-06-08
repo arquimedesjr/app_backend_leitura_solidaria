@@ -39,19 +39,20 @@ public class DBServicesImpl implements DBServices {
 
         profileRepository.saveAll(Arrays.asList(profile1, profile2, profile3, profile4, profile5));
 
-        AddressEntity address1 = AddressEntity.builder().street("Rua flores").number("300").complement("apto 303").district("Jardim").cep("03014000").city("Urberlandia").build();
-        AddressEntity address2 = AddressEntity.builder().street("Avenida Matos").number("105").complement("sala 800").district("Centro").cep("03014232").city("Sao Paulo").build();
-
         OrganizationEntity org1 = OrganizationEntity.builder().id(null).name("Todos Pela Saude LTDA").mail("saude@mail.com")
                 .numCnpj("47241198000169").phones(new HashSet<>(Arrays.asList("11948924982", "1120811446")))
-                .profile(profile1).address(Arrays.asList(address1, address2)).build();
+                .profile(profile1).build();
 
         OrganizationEntity org2 = OrganizationEntity.builder().id(null).name("Uniformes LTDA").mail("uniformes@mail.com")
                 .numCnpj("47241198000169").profile(profile2).phones(new HashSet<>(Arrays.asList("11948924982", "1120811446")))
-                .address(Collections.singletonList(address1)).build();
+                .build();
 
-        addressRepository.saveAll(Arrays.asList(address1, address2));
+        AddressEntity address1 = AddressEntity.builder().street("Rua flores").number("300").complement("apto 303").district("Jardim").cep("03014000").city("Urberlandia").organization(org2).build();
+        AddressEntity address3 = AddressEntity.builder().street("AV rio flores").number("1").complement("apto 111").district("Jardim").cep("03014232").city("Sao Paulo").organization(org2).build();
+        AddressEntity address2 = AddressEntity.builder().street("Avenida Matos").number("105").complement("sala 800").district("Centro").cep("03014232").city("Sao Paulo").organization(org1).build();
+
         organizationRepository.saveAll(Arrays.asList(org1, org2));
+        addressRepository.saveAll(Arrays.asList(address1, address2, address3));
 
         UsersEntity us1 = UsersEntity.builder().id(null).fullName("Arquimedes Junior").mail("main@junior.com").password(bCryptPasswordEncoder.encode("4321")).urlImg("https:/teste.imagem.com").profile(org1.getProfile()).organization(org1).build();
         UsersEntity us2 = UsersEntity.builder().id(null).fullName("João Batista").mail("main@josdaqao.com").password(bCryptPasswordEncoder.encode("4321")).urlImg("https:/teste.imagem.com").profile(org2.getProfile()).organization(org2).build();

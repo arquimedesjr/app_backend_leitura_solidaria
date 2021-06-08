@@ -30,11 +30,10 @@ public class OrganizationEntity extends BaseEntity {
     @JoinColumn(name = "cod_profile")
     private ProfileEntity profile;
 
-    @OneToMany(mappedBy = "organization")
-    private List<AddressEntity> address;
-
     @ElementCollection
     @CollectionTable(name = "tb_phones")
     private Set<String> phones;
+
+
 
 }

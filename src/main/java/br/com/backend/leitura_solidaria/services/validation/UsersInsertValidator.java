@@ -1,6 +1,6 @@
 package br.com.backend.leitura_solidaria.services.validation;
 
-import br.com.backend.leitura_solidaria.domain.response.Users;
+import br.com.backend.leitura_solidaria.domain.response.UsersResponse;
 import br.com.backend.leitura_solidaria.exception.FieldMessage;
 import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
 import br.com.backend.leitura_solidaria.models.repositories.UsersRepository;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class UsersInsertValidator implements ConstraintValidator<UsersInsert, Users> {
+public class UsersInsertValidator implements ConstraintValidator<UsersInsert, UsersResponse> {
     @Autowired
     UsersRepository usersRepository;
 
@@ -27,7 +27,7 @@ public class UsersInsertValidator implements ConstraintValidator<UsersInsert, Us
     }
 
     @Override
-    public boolean isValid(Users obj, ConstraintValidatorContext context) {
+    public boolean isValid(UsersResponse obj, ConstraintValidatorContext context) {
         List<FieldMessage> list = new ArrayList<>();
 
         @SuppressWarnings("unchecked")

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Users {
+public class UsersResponse {
 
     @JsonProperty("id")
     private Integer id;
@@ -24,10 +24,10 @@ public class Users {
     @JsonIgnore
     private String password;
     @JsonProperty("profiles")
-    private Profile profile;
+    private ProfileResponse profile;
     @JsonProperty("ong")
-    private OrganizationUser ong;
+    private OrganizationUserResponse ong;
     @JsonProperty("partner")
-    private OrganizationUser partner;
+    private OrganizationUserResponse partner;
 
 }

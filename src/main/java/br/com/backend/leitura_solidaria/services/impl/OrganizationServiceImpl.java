@@ -1,84 +1,79 @@
 package br.com.backend.leitura_solidaria.services.impl;
 
-import br.com.backend.leitura_solidaria.domain.response.Organization;
-import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
+import br.com.backend.leitura_solidaria.domain.request.OrganizationRequest;
+import br.com.backend.leitura_solidaria.domain.response.AddressResponse;
+import br.com.backend.leitura_solidaria.domain.response.OrganizationResponse;
+import br.com.backend.leitura_solidaria.domain.response.ProfileResponse;
 import br.com.backend.leitura_solidaria.exception.ObjectNotFoundException;
 import br.com.backend.leitura_solidaria.models.entity.AddressEntity;
 import br.com.backend.leitura_solidaria.models.entity.OrganizationEntity;
 import br.com.backend.leitura_solidaria.models.repositories.AddressRepository;
 import br.com.backend.leitura_solidaria.models.repositories.OrganizationRepository;
-import br.com.backend.leitura_solidaria.models.repositories.ProfileRepository;
+import br.com.backend.leitura_solidaria.models.repositories.UsersRepository;
 import br.com.backend.leitura_solidaria.services.OrganizationService;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
 public class OrganizationServiceImpl implements OrganizationService {
-
-    private final OrganizationRepository organizationRepository;
     private final AddressRepository addressRepository;
-    private final ProfileRepository profileRepository;
+    private final OrganizationRepository organizationRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public List<OrganizationEntity> findAll() {
-        return organizationRepository.findAll();
+    public List<OrganizationResponse> findAll(ModelMapper mapper) {
+        List<OrganizationResponse> organizationResponses = new LinkedList<>();
+        List<OrganizationEntity> organizationEntityList = organizationRepository.findAll();
+
+        if (organizationEntityList.isEmpty())
+            throw new ObjectNotFoundException("Não possui nenhum registro de Organização");
+
+        organizationEntityList.forEach(x -> {
+            List<AddressResponse> addressResponse = new LinkedList<>();
+            ProfileResponse profileResponse = mapper.map(x.getProfile(), ProfileResponse.class);
+            List<AddressEntity> addressEntityList = addressRepository.findByOrganizationId(x.getId());
+
+            addressEntityList.forEach(addressEntity ->
+                    addressResponse.add(mapper.map(addressEntity, AddressResponse.class))
+            );
+
+            organizationResponses.add(OrganizationResponse.builder().name(x.getName()).profile(profileResponse).id(x.getId()).mail(x.getMail()).numCnpj(x.getNumCnpj()).phones(x.getPhones()).address(addressResponse).build());
+
+        });
+
+        return organizationResponses;
     }
 
     @Override
-    public OrganizationEntity find(Integer id) {
-        Optional<OrganizationEntity> obj = organizationRepository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Organization.class.getName()));
+    public OrganizationResponse find(Integer id, ModelMapper mapper) {
+        return null;
     }
 
     @Override
-    public OrganizationEntity insert(OrganizationEntity obj) {
-        try {
-            obj.setId(null);
-            return organizationRepository.save(obj);
-        } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não foi possível inserir a organização");
-        }
+    public OrganizationResponse insert(OrganizationRequest obj, ModelMapper mapper) {
+        return null;
     }
 
     @Override
-    public void update(OrganizationEntity obj) {
-        OrganizationEntity newObj = find(obj.getId());
-        hasAddress(obj);
-        newObj = OrganizationEntity.builder().id(newObj.getId()).name(newObj.getName()).mail(newObj.getMail()).numCnpj(newObj.getNumCnpj()).profile(obj.getProfile()).build();
-        organizationRepository.save(newObj);
+    public void update(OrganizationRequest obj, Integer id) {
+
     }
 
     @Override
     public void delete(Integer id) {
-        OrganizationEntity obj = find(id);
-        organizationRepository.delete(obj);
+
     }
 
     @Override
     public Page<OrganizationEntity> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return organizationRepository.findAll(pageRequest);
-    }
-
-
-    public void hasAddress(OrganizationEntity obj) {
-        if (!obj.getAddress().isEmpty()) {
-
-            obj.getAddress().forEach(address -> {
-                AddressEntity byStreetAndNumber = addressRepository.findByStreetAndNumber(address.getStreet(), address.getNumber());
-                if (byStreetAndNumber != null)
-                    addressRepository.save(byStreetAndNumber);
-            });
-
-        }
+        return null;
     }
 }

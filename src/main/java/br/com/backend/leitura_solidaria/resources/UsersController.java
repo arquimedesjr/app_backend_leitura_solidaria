@@ -1,8 +1,7 @@
 package br.com.backend.leitura_solidaria.resources;
 
 import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
-import br.com.backend.leitura_solidaria.domain.response.Users;
-import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
+import br.com.backend.leitura_solidaria.domain.response.UsersResponse;
 import br.com.backend.leitura_solidaria.services.UsersService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
@@ -36,14 +35,14 @@ public class UsersController {
     @GetMapping(value = {"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public Object find(@PathVariable Integer id) {
-        return mapper.map(service.find(id, mapper), Users.class);
+        return mapper.map(service.find(id, mapper), UsersResponse.class);
     }
 
     @PostMapping()
     @ResponseStatus(value = HttpStatus.CREATED)
     public Object insert(@Valid @RequestBody UsersRequest obj) {
 
-        Users users = service.insert(obj, mapper);
+        UsersResponse users = service.insert(obj, mapper);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(users.getId()).toUri();
