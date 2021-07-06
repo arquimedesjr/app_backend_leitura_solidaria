@@ -21,4 +21,6 @@ public interface UsersService {
     void delete(Integer id);
 
     Page<UsersEntity> findPage(Integer page, Integer linesPerPage, String orderBy, String direction);
+
+    UsersResponse findMail(String mail, ModelMapper mapper);
 }

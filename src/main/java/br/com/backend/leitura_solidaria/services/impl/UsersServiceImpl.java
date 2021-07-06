@@ -109,6 +109,18 @@ public class UsersServiceImpl implements UsersService {
         return usersRepository.findAll(pageRequest);
     }
 
+    @Override
+    public UsersResponse findMail(String mail, ModelMapper mapper) {
+        UsersEntity obj = usersRepository.findByMail(mail);
+
+        if (obj != null) {
+            return verifyOrganization(obj, mapper);
+        }
+
+        throw new ObjectNotFoundException(
+                "Objeto não encontrado!  Tipo: " + UsersResponse.class.getName());
+    }
+
 
     public List<UsersResponse> verifyOngPatner(ModelMapper mapper, List<UsersEntity> usersList) {
         List<UsersResponse> users = new LinkedList<>();
