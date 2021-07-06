@@ -2,6 +2,7 @@ package br.com.backend.leitura_solidaria.security;
 
 import br.com.backend.leitura_solidaria.dto.CredentialsDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -46,10 +48,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username = ((UserSS) authResult.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(username);
         response.addHeader("Authorization", "Bearer " + token);
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"Authorization\": "+ token +", "
-                                    + "\"type\": Bearer}");
+        String json = "{\n" +
+                "    \"Authorization\": \"" +token+ "\",\n" +
+                "    \"type\": \"Bearer\"\n" +
+                "}";
+
+        response.getWriter().write(json);
 
     }
 
@@ -72,11 +79,5 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     + "\"message\": \"Email ou senha inválidos\"}";
 
         }
-    }
-
-    private String json() {
-        long date = new Date().getTime();
-        return "";
-
     }
 }
