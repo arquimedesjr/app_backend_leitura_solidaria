@@ -42,11 +42,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         String username = ((UserSS) authResult.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(username);
-        response.addHeader("Authorization", "Bearer "+token);
+        response.addHeader("Authorization", "Bearer " + token);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"Authorization\": "+ token +", "
+                                    + "\"type\": Bearer}");
+
     }
+
 
     private static class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
@@ -66,5 +72,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     + "\"message\": \"Email ou senha inválidos\"}";
 
         }
+    }
+
+    private String json() {
+        long date = new Date().getTime();
+        return "";
+
     }
 }

@@ -1,25 +1,20 @@
 package br.com.backend.leitura_solidaria.domain.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.Set;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Organization {
+public class OrganizationUserResponse {
 
+    @JsonProperty("id")
     private Integer id;
+    @JsonProperty("name")
     private String name;
-    private String mail;
-    private String numCnpj;
-    private Profile profile;
-    private List<Address> address;
-    private Set<String> phones;
 
 }

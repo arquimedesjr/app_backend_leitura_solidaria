@@ -1,9 +1,9 @@
 package br.com.backend.leitura_solidaria.resources;
 
 import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
-import br.com.backend.leitura_solidaria.domain.response.OrganizationUser;
-import br.com.backend.leitura_solidaria.domain.response.Profile;
-import br.com.backend.leitura_solidaria.domain.response.Users;
+import br.com.backend.leitura_solidaria.domain.response.OrganizationUserResponse;
+import br.com.backend.leitura_solidaria.domain.response.ProfileResponse;
+import br.com.backend.leitura_solidaria.domain.response.UsersResponse;
 import br.com.backend.leitura_solidaria.security.JWTUtil;
 import br.com.backend.leitura_solidaria.services.UsersService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -105,9 +105,9 @@ public class UsersControllerTest {
     @DisplayName("Deve retornar codigo 204 após atualizar um usuario")
     public void deveRetornarCode204Update() throws Exception {
 
-        OrganizationUser todos_pela_saude = OrganizationUser.builder().id(1).name("Todos Pela Saude").build();
-        Profile ong = Profile.builder().id(1).type("ONG").build();
-        Users arquimedes_junior = Users.builder().fullName("Arquimedes Junior").mail("mail@mail.com.br").ong(todos_pela_saude).partner(null).profile(ong).urlImg(null).password("2131").build();
+        OrganizationUserResponse todos_pela_saude = OrganizationUserResponse.builder().id(1).name("Todos Pela Saude").build();
+        ProfileResponse ong = ProfileResponse.builder().id(1).type("ONG").build();
+        UsersResponse arquimedes_junior = UsersResponse.builder().fullName("Arquimedes Junior").mail("mail@mail.com.br").ong(todos_pela_saude).partner(null).profile(ong).urlImg(null).password("2131").build();
         String json = new ObjectMapper().writeValueAsString(arquimedes_junior);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -134,14 +134,14 @@ public class UsersControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    public List<Users> buildUsers() {
-        List<Users> usersList = new LinkedList<>();
+    public List<UsersResponse> buildUsers() {
+        List<UsersResponse> usersList = new LinkedList<>();
 
-        OrganizationUser todos_pela_saude = OrganizationUser.builder().id(1).name("Todos Pela Saude").build();
-        Profile ong = Profile.builder().id(1).type("ONG").build();
-        Profile partner = Profile.builder().id(1).type("PARTNER").build();
-        usersList.add(Users.builder().fullName("Arquimedes Junior").id(1).mail("mail@mail.com.br").ong(todos_pela_saude).partner(null).profile(ong).urlImg(null).password("2131").build());
-        usersList.add(Users.builder().fullName("Romulo Larceda").id(2).mail("mail@mail.com.br").ong(null).partner(todos_pela_saude).profile(partner).urlImg(null).password("2131").build());
+        OrganizationUserResponse todos_pela_saude = OrganizationUserResponse.builder().id(1).name("Todos Pela Saude").build();
+        ProfileResponse ong = ProfileResponse.builder().id(1).type("ONG").build();
+        ProfileResponse partner = ProfileResponse.builder().id(1).type("PARTNER").build();
+        usersList.add(UsersResponse.builder().fullName("Arquimedes Junior").id(1).mail("mail@mail.com.br").ong(todos_pela_saude).partner(null).profile(ong).urlImg(null).password("2131").build());
+        usersList.add(UsersResponse.builder().fullName("Romulo Larceda").id(2).mail("mail@mail.com.br").ong(null).partner(todos_pela_saude).profile(partner).urlImg(null).password("2131").build());
 
         return usersList;
     }

@@ -1,9 +1,9 @@
 package br.com.backend.leitura_solidaria.services.impl;
 
 import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
-import br.com.backend.leitura_solidaria.domain.response.OrganizationUser;
-import br.com.backend.leitura_solidaria.domain.response.Profile;
-import br.com.backend.leitura_solidaria.domain.response.Users;
+import br.com.backend.leitura_solidaria.domain.response.OrganizationUserResponse;
+import br.com.backend.leitura_solidaria.domain.response.ProfileResponse;
+import br.com.backend.leitura_solidaria.domain.response.UsersResponse;
 import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.exception.ObjectNotFoundException;
 import br.com.backend.leitura_solidaria.models.entity.OrganizationEntity;
@@ -33,13 +33,13 @@ public class UsersServiceImpl implements UsersService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public List<Users> findAll(ModelMapper mapper) {
+    public List<UsersResponse> findAll(ModelMapper mapper) {
         List<UsersEntity> usersList = usersRepository.findAll();
         return verifyOngPatner(mapper, usersList);
     }
 
     @Override
-    public Users find(Integer id, ModelMapper mapper) {
+    public UsersResponse find(Integer id, ModelMapper mapper) {
         Optional<UsersEntity> obj = usersRepository.findById(id);
 
         if (obj.isPresent()) {
@@ -47,15 +47,13 @@ public class UsersServiceImpl implements UsersService {
         }
 
         throw new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName());
-
-
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + UsersResponse.class.getName());
     }
 
     public UsersEntity find(Integer id) {
         Optional<UsersEntity> obj = usersRepository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Users.class.getName()));
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + UsersEntity.class.getName()));
     }
 
     public OrganizationEntity findOrg(Integer id) {
@@ -65,11 +63,9 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Users insert(UsersRequest obj, ModelMapper mapper) {
+    public UsersResponse insert(UsersRequest obj, ModelMapper mapper) {
         try {
-
             OrganizationEntity org = findOrg(obj.getOrganization());
-
             UsersEntity objEntity = UsersEntity.builder()
                     .fullName(obj.getFullName())
                     .mail(obj.getMail())
@@ -79,8 +75,7 @@ public class UsersServiceImpl implements UsersService {
                     .urlImg(obj.getUrlImg())
                     .build();
 
-            return mapper.map(usersRepository.save(objEntity), Users.class);
-
+            return mapper.map(usersRepository.save(objEntity), UsersResponse.class);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não foi possível inserir o usuário");
         }
@@ -115,53 +110,51 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
-    public List<Users> verifyOngPatner(ModelMapper mapper, List<UsersEntity> usersList) {
-        List<Users> users = new LinkedList<>();
-
+    public List<UsersResponse> verifyOngPatner(ModelMapper mapper, List<UsersEntity> usersList) {
+        List<UsersResponse> users = new LinkedList<>();
         for (UsersEntity entity : usersList) {
             users.add(verifyOrganization(entity, mapper));
         }
         return users;
     }
 
-    public Users verifyOrganization(UsersEntity entity, ModelMapper mapper) {
+    public UsersResponse verifyOrganization(UsersEntity entity, ModelMapper mapper) {
 
         if (entity.getOrganization() != null && entity.getOrganization().getProfile().getType().equals("ONG")) {
-            return Users.builder()
-                    .ong(mapper.map(entity.getOrganization(), OrganizationUser.class))
+            return UsersResponse.builder()
+                    .ong(mapper.map(entity.getOrganization(), OrganizationUserResponse.class))
                     .urlImg(entity.getUrlImg())
                     .password(entity.getPassword())
                     .fullName(entity.getFullName())
-                    .profile(mapper.map(entity.getProfile(), Profile.class))
+                    .profile(mapper.map(entity.getProfile(), ProfileResponse.class))
                     .partner(null)
                     .id(entity.getId())
                     .mail(entity.getMail())
                     .build();
 
         } else if (entity.getOrganization() != null && entity.getOrganization().getProfile().getType().equals("PARTNER")) {
-            return Users.builder()
+            return UsersResponse.builder()
                     .ong(null)
                     .urlImg(entity.getUrlImg())
                     .password(entity.getPassword())
                     .fullName(entity.getFullName())
-                    .profile(mapper.map(entity.getProfile(), Profile.class))
-                    .partner(mapper.map(entity.getOrganization(), OrganizationUser.class))
+                    .profile(mapper.map(entity.getProfile(), ProfileResponse.class))
+                    .partner(mapper.map(entity.getOrganization(), OrganizationUserResponse.class))
                     .id(entity.getId())
                     .mail(entity.getMail())
                     .build();
         } else {
-            return Users.builder()
+            return UsersResponse.builder()
                     .ong(null)
                     .urlImg(entity.getUrlImg())
                     .password(entity.getPassword())
                     .fullName(entity.getFullName())
-                    .profile(mapper.map(entity.getProfile(), Profile.class))
+                    .profile(mapper.map(entity.getProfile(), ProfileResponse.class))
                     .partner(null)
                     .id(entity.getId())
                     .mail(entity.getMail())
                     .build();
         }
-
     }
 }
 

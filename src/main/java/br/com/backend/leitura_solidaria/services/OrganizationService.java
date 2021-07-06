@@ -1,19 +1,22 @@
 package br.com.backend.leitura_solidaria.services;
 
+import br.com.backend.leitura_solidaria.domain.request.OrganizationRequest;
+import br.com.backend.leitura_solidaria.domain.response.OrganizationResponse;
 import br.com.backend.leitura_solidaria.models.entity.OrganizationEntity;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface OrganizationService {
 
-    List<OrganizationEntity> findAll();
+    List<OrganizationResponse> findAll(ModelMapper mapper);
 
-    OrganizationEntity find(Integer id);
+    OrganizationResponse find(Integer id, ModelMapper mapper);
 
-    OrganizationEntity insert(OrganizationEntity obj);
+    OrganizationResponse insert(OrganizationRequest obj, ModelMapper mapper);
 
-    void update(OrganizationEntity obj);
+    void update(OrganizationRequest obj, Integer id);
 
     void delete(Integer id);
 

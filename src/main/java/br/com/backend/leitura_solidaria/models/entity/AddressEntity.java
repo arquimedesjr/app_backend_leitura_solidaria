@@ -30,8 +30,8 @@ public class AddressEntity extends BaseEntity {
     @Column(name = "city")
     private String city;
 
-    @ManyToOne
-    @JoinColumn(name = "organization_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cod_organization")
     private OrganizationEntity organization;
 
 }
