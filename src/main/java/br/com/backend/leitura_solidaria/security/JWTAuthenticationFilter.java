@@ -53,6 +53,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     }
 
+
     private static class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
         @Override
