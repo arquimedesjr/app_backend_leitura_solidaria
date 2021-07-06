@@ -6,6 +6,7 @@ import br.com.backend.leitura_solidaria.services.UsersService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class UsersController {
     @Autowired
     private ModelMapper mapper;
 
-    @GetMapping()
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Object findAll() {
         return service.findAll(mapper);
@@ -35,10 +36,16 @@ public class UsersController {
     @GetMapping(value = {"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public Object find(@PathVariable Integer id) {
-        return mapper.map(service.find(id, mapper), UsersResponse.class);
+        return service.find(id, mapper);
     }
 
-    @PostMapping()
+    @GetMapping("/mail")
+    @ResponseStatus(HttpStatus.OK)
+    public Object findMail(@RequestParam String mail) {
+        return service.findMail(mail, mapper);
+    }
+
+    @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public Object insert(@Valid @RequestBody UsersRequest obj) {
 
@@ -61,5 +68,7 @@ public class UsersController {
     public void delete(@PathVariable Integer id) {
         service.delete(id);
     }
+
+
 
 }

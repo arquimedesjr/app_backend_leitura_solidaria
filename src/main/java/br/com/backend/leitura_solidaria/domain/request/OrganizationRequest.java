@@ -1,9 +1,6 @@
 package br.com.backend.leitura_solidaria.domain.request;
 
-import br.com.backend.leitura_solidaria.domain.response.AddressResponse;
-import br.com.backend.leitura_solidaria.domain.response.ProfileResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
