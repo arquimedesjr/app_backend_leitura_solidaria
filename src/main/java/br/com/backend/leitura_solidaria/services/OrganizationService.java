@@ -20,5 +20,5 @@ public interface OrganizationService {
 
     void delete(Integer id);
 
-    Page<OrganizationEntity> findPage(Integer page, Integer linesPerPage, String orderBy, String direction);
+    List<OrganizationResponse> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, ModelMapper mapper);
 }

@@ -40,6 +40,16 @@ public class OrganizationController {
         return service.find(id, mapper);
     }
 
+    @GetMapping(value = {"/page"})
+    @ResponseStatus(HttpStatus.OK)
+    public Object findPage(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                           @RequestParam(name = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+                           @RequestParam(name = "orderBy", defaultValue = "id") String orderBy,
+                           @RequestParam(name = "direction", defaultValue = "ASC") String direction) {
+
+        return service.findPage(page, linesPerPage, orderBy, direction, mapper);
+    }
+
     @PostMapping()
     @ResponseStatus(value = HttpStatus.CREATED)
     public Object insert(@Valid @RequestBody OrganizationRequest obj) {

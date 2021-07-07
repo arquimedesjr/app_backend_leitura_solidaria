@@ -20,9 +20,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -104,9 +107,10 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Page<UsersEntity> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    public List<UsersResponse> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, ModelMapper mapper) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), String.valueOf(orderBy));
-        return usersRepository.findAll(pageRequest);
+        Page<UsersEntity> all = usersRepository.findAll(pageRequest);
+        return verifyOngPatner(mapper,all.getContent());
     }
 
     @Override
