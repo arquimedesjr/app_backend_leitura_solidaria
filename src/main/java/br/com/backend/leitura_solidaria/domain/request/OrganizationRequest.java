@@ -23,8 +23,8 @@ public class OrganizationRequest {
     private String numCnpj;
     @JsonProperty("profile")
     private Integer profile;
-    @JsonProperty("cod_address")
-    private List<Integer> address;
+    @JsonProperty("address")
+    private List<AddressRequest> address;
     @JsonProperty("phones")
     private Set<String> phones;
 

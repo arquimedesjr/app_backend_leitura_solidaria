@@ -2,9 +2,7 @@ package br.com.backend.leitura_solidaria.services;
 
 import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
 import br.com.backend.leitura_solidaria.domain.response.UsersResponse;
-import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -20,7 +18,7 @@ public interface UsersService {
 
     void delete(Integer id);
 
-    Page<UsersEntity> findPage(Integer page, Integer linesPerPage, String orderBy, String direction);
+    List<UsersResponse> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, ModelMapper mapper);
 
     UsersResponse findMail(String mail, ModelMapper mapper);
 }
