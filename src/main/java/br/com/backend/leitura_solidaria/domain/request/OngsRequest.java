@@ -1,4 +1,4 @@
-package br.com.backend.leitura_solidaria.domain.response;
+package br.com.backend.leitura_solidaria.domain.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -13,10 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrganizationResponse {
+public class OngsRequest {
 
-    @JsonProperty("cod_organization")
-    private Integer id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("mail")
@@ -24,10 +22,20 @@ public class OrganizationResponse {
     @JsonProperty("num_cnpj")
     private String numCnpj;
     @JsonProperty("profile")
-    private ProfileResponse profile;
-    @JsonProperty("address")
-    private List<AddressResponse> address;
+    private Integer profile;
     @JsonProperty("phones")
     private Set<String> phones;
+    @JsonProperty("street")
+    private String street;
+    @JsonProperty("number")
+    private String number;
+    @JsonProperty("complement")
+    private String complement;
+    @JsonProperty("district")
+    private String district;
+    @JsonProperty("city")
+    private String city;
+    @JsonProperty("zip_code")
+    private String cep;
 
 }

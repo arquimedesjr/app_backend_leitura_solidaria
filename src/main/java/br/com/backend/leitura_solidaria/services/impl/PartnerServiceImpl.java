@@ -1,11 +1,14 @@
 package br.com.backend.leitura_solidaria.services.impl;
 
-import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
+import br.com.backend.leitura_solidaria.domain.request.PartnerRequest;
+import br.com.backend.leitura_solidaria.domain.response.AddressResponse;
 import br.com.backend.leitura_solidaria.domain.response.PartnerResponse;
 import br.com.backend.leitura_solidaria.domain.response.pagination.PartnerPaginationResponse;
 import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.exception.ObjectNotFoundException;
+import br.com.backend.leitura_solidaria.models.entity.AddressEntity;
 import br.com.backend.leitura_solidaria.models.entity.PartnerEntity;
+import br.com.backend.leitura_solidaria.models.repositories.AddressRepository;
 import br.com.backend.leitura_solidaria.models.repositories.PartnerRepository;
 import br.com.backend.leitura_solidaria.services.PartnerService;
 import lombok.AllArgsConstructor;
@@ -26,53 +29,55 @@ public class PartnerServiceImpl implements PartnerService {
 
 
     private final PartnerRepository partnerRepository;
+    private final AddressRepository addressRepository;
 
     @Override
     public List<PartnerResponse> findAll(ModelMapper mapper) {
-        List<PartnerResponse> usersResponses = new LinkedList<>();
-        List<PartnerEntity> usersList = partnerRepository.findAll();
-
-        for (PartnerEntity entity : usersList) {
-            usersResponses.add(mapper.map(entity, PartnerResponse.class));
-        }
-        return usersResponses;
+        List<PartnerEntity> list = partnerRepository.findAll();
+        return converToPartnerResponse(list, mapper);
     }
 
     @Override
     public PartnerResponse find(Integer id, ModelMapper mapper) {
-        Optional<PartnerEntity> obj = partnerRepository.findById(id);
 
-        if (obj.isPresent()) {
-            return mapper.map(obj.get(), PartnerResponse.class);
-        }
+        PartnerEntity partnerEntity = find(id);
+        List<AddressResponse> addressResponses = converToAddressResponse(partnerEntity,mapper);
+        PartnerResponse partnerResponse = mapper.map(partnerEntity,PartnerResponse.class);
+        partnerResponse.setAddress(addressResponses);
 
-        throw new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + PartnerResponse.class.getName());
+        return partnerResponse;
     }
 
     @Override
-    public PartnerResponse insert(UsersRequest obj, ModelMapper mapper) {
+    public PartnerResponse insert(PartnerRequest obj, ModelMapper mapper) {
         try {
 
+            PartnerEntity objEntity = mapper.map(obj, PartnerEntity.class);
+            partnerRepository.save(objEntity);
+            AddressEntity addressEntity = mapper.map(obj, AddressEntity.class);
+            addressEntity.setPartner(objEntity);
+            addressRepository.save(addressEntity);
 
-            PartnerEntity objEntity = PartnerEntity.builder()
-
-                    .build();
-
-            return mapper.map(partnerRepository.save(objEntity), PartnerResponse.class);
+            return mapper.map(objEntity, PartnerResponse.class);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não foi possível inserir o usuário");
         }
     }
 
     @Override
-    public void update(UsersRequest obj, Integer id) {
+    public void update(PartnerRequest obj, Integer id, ModelMapper mapper) {
         PartnerEntity newObj = find(id);
 
-        partnerRepository.save(PartnerEntity.builder()
-                .id(newObj.getId())
+        PartnerEntity objEntity = mapper.map(obj, PartnerEntity.class);
+        objEntity.setId(newObj.getId());
+        partnerRepository.save(objEntity);
 
-                .build());
+        AddressEntity newObjAdd = addressRepository.findByStreetAndNumberAndCep(obj.getStreet(), obj.getNumber(), obj.getCep());
+
+        AddressEntity addressEntity = mapper.map(obj, AddressEntity.class);
+        addressEntity.setId(newObjAdd.getId());
+        addressEntity.setPartner(objEntity);
+        addressRepository.save(addressEntity);
     }
 
     @Override
@@ -86,17 +91,16 @@ public class PartnerServiceImpl implements PartnerService {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), String.valueOf(orderBy));
         Page<PartnerEntity> all = partnerRepository.findAll(pageRequest);
 
-        List<PartnerResponse> usersResponses = new LinkedList<>();
+        List<PartnerResponse> partnerResponses = new LinkedList<>();
 
         for (PartnerEntity entity : all.getContent()) {
-            usersResponses.add(mapper.map(entity, PartnerResponse.class));
+            partnerResponses.add(mapper.map(entity, PartnerResponse.class));
         }
 
         return PartnerPaginationResponse.builder()
                 .count(all.getNumberOfElements())
-                .partner(usersResponses).build();
+                .partner(partnerResponses).build();
     }
-
 
 
     private PartnerEntity find(Integer id) {
@@ -105,6 +109,32 @@ public class PartnerServiceImpl implements PartnerService {
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + PartnerEntity.class.getName()));
     }
 
+    private List<PartnerResponse> converToPartnerResponse(List<PartnerEntity> list, ModelMapper mapper) {
+        List<PartnerResponse> partnerResponses = new LinkedList<>();
+        List<AddressResponse> addressResponses;
+        for (PartnerEntity entity : list) {
+            addressResponses = new LinkedList<>();
+            List<AddressEntity> byPartnerId = addressRepository.findByPartnerId(entity.getId());
 
+            PartnerResponse map = mapper.map(entity, PartnerResponse.class);
+
+            for (AddressEntity addressEntity : byPartnerId) {
+                addressResponses.add(mapper.map(addressEntity, AddressResponse.class));
+            }
+
+            map.setAddress(addressResponses);
+            partnerResponses.add(map);
+        }
+        return partnerResponses;
+    }
+
+    private List<AddressResponse> converToAddressResponse(PartnerEntity entity, ModelMapper mapper) {
+            List<AddressResponse> addressResponses =new LinkedList<>();
+            List<AddressEntity> byPartnerId = addressRepository.findByPartnerId(entity.getId());
+            for (AddressEntity addressEntity : byPartnerId) {
+                addressResponses.add(mapper.map(addressEntity, AddressResponse.class));
+            }
+        return addressResponses;
+    }
 }
 

@@ -26,8 +26,8 @@ public class UsersResponse {
     @JsonProperty("profiles")
     private ProfileResponse profile;
     @JsonProperty("ong")
-    private OngsResponse ongs;
+    private OngsUserResponse ongs;
     @JsonProperty("partner")
-    private PartnerResponse partner;
+    private PartnerUserResponse partner;
 
 }

@@ -36,7 +36,7 @@ public class AddressEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cod_ongs")
-    private OngsEntity ongsEntity;
+    private OngsEntity ongs;
 
 }
 

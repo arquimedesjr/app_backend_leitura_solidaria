@@ -6,12 +6,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddressRequest {
+public class PartnerRequest {
 
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("mail")
+    private String mail;
+    @JsonProperty("num_cnpj")
+    private String numCnpj;
+    @JsonProperty("profile")
+    private Integer profile;
+    @JsonProperty("phones")
+    private Set<String> phones;
     @JsonProperty("street")
     private String street;
     @JsonProperty("number")
