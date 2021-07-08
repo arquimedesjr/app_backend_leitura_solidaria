@@ -21,21 +21,10 @@ public class PartnerRequest {
     private String mail;
     @JsonProperty("num_cnpj")
     private String numCnpj;
-    @JsonProperty("profile")
-    private Integer profile;
     @JsonProperty("phones")
     private Set<String> phones;
-    @JsonProperty("street")
-    private String street;
-    @JsonProperty("number")
-    private String number;
-    @JsonProperty("complement")
-    private String complement;
-    @JsonProperty("district")
-    private String district;
-    @JsonProperty("city")
-    private String city;
-    @JsonProperty("zip_code")
-    private String cep;
+
+    @JsonProperty("address")
+    List<AddressRequest> address;
 
 }

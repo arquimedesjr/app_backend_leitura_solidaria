@@ -1,5 +1,6 @@
 package br.com.backend.leitura_solidaria.services.impl;
 
+import br.com.backend.leitura_solidaria.domain.request.AddressRequest;
 import br.com.backend.leitura_solidaria.domain.request.PartnerRequest;
 import br.com.backend.leitura_solidaria.domain.response.AddressResponse;
 import br.com.backend.leitura_solidaria.domain.response.PartnerCodeNameResponse;
@@ -63,11 +64,16 @@ public class PartnerServiceImpl implements PartnerService {
     public PartnerResponse insert(PartnerRequest obj, ModelMapper mapper) {
         try {
 
+
+
             PartnerEntity objEntity = mapper.map(obj, PartnerEntity.class);
             partnerRepository.save(objEntity);
-            AddressEntity addressEntity = mapper.map(obj, AddressEntity.class);
-            addressEntity.setPartner(objEntity);
-            addressRepository.save(addressEntity);
+
+            for(AddressRequest request: obj.getAddress()){
+                AddressEntity map = mapper.map(request, AddressEntity.class);
+                map.setPartner(objEntity);
+                addressRepository.save(map);
+            }
 
             return mapper.map(objEntity, PartnerResponse.class);
         } catch (DataIntegrityViolationException e) {
@@ -83,12 +89,12 @@ public class PartnerServiceImpl implements PartnerService {
         objEntity.setId(newObj.getId());
         partnerRepository.save(objEntity);
 
-        AddressEntity newObjAdd = addressRepository.findByStreetAndNumberAndCep(obj.getStreet(), obj.getNumber(), obj.getCep());
-
-        AddressEntity addressEntity = mapper.map(obj, AddressEntity.class);
-        addressEntity.setId(newObjAdd.getId());
-        addressEntity.setPartner(objEntity);
-        addressRepository.save(addressEntity);
+//        AddressEntity newObjAdd = addressRepository.findByStreetAndNumberAndCep(obj.getStreet(), obj.getNumber(), obj.getCep());
+//
+//        AddressEntity addressEntity = mapper.map(obj, AddressEntity.class);
+//        addressEntity.setId(newObjAdd.getId());
+//        addressEntity.setPartner(objEntity);
+//        addressRepository.save(addressEntity);
     }
 
     @Override
