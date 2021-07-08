@@ -31,8 +31,12 @@ public class AddressEntity extends BaseEntity {
     private String city;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "cod_organization")
-    private OrganizationEntity organization;
+    @JoinColumn(name = "cod_partner")
+    private PartnerEntity partner;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cod_ongs")
+    private OngsEntity ongsEntity;
 
 }
 

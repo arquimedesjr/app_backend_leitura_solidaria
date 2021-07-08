@@ -20,7 +20,11 @@ public class UsersRequest {
     private String urlImg;
     @JsonProperty("password")
     private String password;
-    @JsonProperty("cod_organization")
-    private Integer organization;
+    @JsonProperty("cod_profile")
+    private Integer profile;
+    @JsonProperty("cod_ongs")
+    private Integer ongs;
+    @JsonProperty("cod_partner")
+    private Integer partner;
 
 }

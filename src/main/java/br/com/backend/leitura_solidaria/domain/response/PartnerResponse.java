@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProfileResponse {
+public class PartnerResponse {
 
-    @JsonProperty("cod_profile")
+    @JsonProperty("cod_partner")
     private Integer id;
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("name")
+    private String name;
 
 }

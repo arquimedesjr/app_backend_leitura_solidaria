@@ -1,14 +1,17 @@
 package br.com.backend.leitura_solidaria.services.impl;
 
 import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
-import br.com.backend.leitura_solidaria.domain.response.OrganizationUserResponse;
-import br.com.backend.leitura_solidaria.domain.response.ProfileResponse;
 import br.com.backend.leitura_solidaria.domain.response.UsersResponse;
+import br.com.backend.leitura_solidaria.domain.response.pagination.UsersPaginationResponse;
 import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.exception.ObjectNotFoundException;
-import br.com.backend.leitura_solidaria.models.entity.OrganizationEntity;
+import br.com.backend.leitura_solidaria.models.entity.OngsEntity;
+import br.com.backend.leitura_solidaria.models.entity.PartnerEntity;
+import br.com.backend.leitura_solidaria.models.entity.ProfileEntity;
 import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
-import br.com.backend.leitura_solidaria.models.repositories.OrganizationRepository;
+import br.com.backend.leitura_solidaria.models.repositories.OngsRepository;
+import br.com.backend.leitura_solidaria.models.repositories.PartnerRepository;
+import br.com.backend.leitura_solidaria.models.repositories.ProfileRepository;
 import br.com.backend.leitura_solidaria.models.repositories.UsersRepository;
 import br.com.backend.leitura_solidaria.services.UsersService;
 import lombok.AllArgsConstructor;
@@ -20,25 +23,29 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
-    private final OrganizationRepository organizationRepository;
+    private final ProfileRepository profileRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final OngsRepository ongsRepository;
+    private final PartnerRepository partnerRepository;
 
     @Override
     public List<UsersResponse> findAll(ModelMapper mapper) {
+        List<UsersResponse> usersResponses = new LinkedList<>();
         List<UsersEntity> usersList = usersRepository.findAll();
-        return verifyOngPatner(mapper, usersList);
+
+        for (UsersEntity entity : usersList) {
+            usersResponses.add(mapper.map(entity, UsersResponse.class));
+        }
+        return usersResponses;
     }
 
     @Override
@@ -46,34 +53,25 @@ public class UsersServiceImpl implements UsersService {
         Optional<UsersEntity> obj = usersRepository.findById(id);
 
         if (obj.isPresent()) {
-            return verifyOrganization(obj.get(), mapper);
+            return mapper.map(obj.get(), UsersResponse.class);
         }
 
         throw new ObjectNotFoundException(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + UsersResponse.class.getName());
     }
 
-    public UsersEntity find(Integer id) {
-        Optional<UsersEntity> obj = usersRepository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + UsersEntity.class.getName()));
-    }
-
-    public OrganizationEntity findOrg(Integer id) {
-        Optional<OrganizationEntity> obj = organizationRepository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + OrganizationEntity.class.getName()));
-    }
-
     @Override
     public UsersResponse insert(UsersRequest obj, ModelMapper mapper) {
         try {
-            OrganizationEntity org = findOrg(obj.getOrganization());
+
+            ProfileEntity profile = findProfile(obj.getProfile());
+
             UsersEntity objEntity = UsersEntity.builder()
                     .fullName(obj.getFullName())
                     .mail(obj.getMail())
-                    .organization(org)
-                    .profile(org.getProfile())
+                    .profile(profile)
+                    .ongs(obj.getOngs() != null ? findOngs(obj.getOngs()) : null)
+                    .partner(obj.getPartner() != null ? findPartner(obj.getPartner()) : null)
                     .password(bCryptPasswordEncoder.encode(obj.getPassword()))
                     .urlImg(obj.getUrlImg())
                     .build();
@@ -87,16 +85,16 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void update(UsersRequest obj, Integer id) {
         UsersEntity newObj = find(id);
-
-        OrganizationEntity org = findOrg(obj.getOrganization());
+        ProfileEntity profile = findProfile(obj.getProfile());
 
         usersRepository.save(UsersEntity.builder()
                 .id(newObj.getId())
                 .fullName(obj.getFullName())
                 .mail(obj.getMail())
-                .organization(org)
-                .profile(org.getProfile())
-                .password(obj.getPassword())
+                .profile(profile)
+                .ongs(obj.getOngs() != null ? findOngs(obj.getOngs()) : null)
+                .partner(obj.getPartner() != null ? findPartner(obj.getPartner()) : null)
+                .password(bCryptPasswordEncoder.encode(obj.getPassword()))
                 .build());
     }
 
@@ -107,10 +105,19 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public List<UsersResponse> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, ModelMapper mapper) {
+    public UsersPaginationResponse findPage(Integer page, Integer linesPerPage, String orderBy, String direction, ModelMapper mapper) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), String.valueOf(orderBy));
         Page<UsersEntity> all = usersRepository.findAll(pageRequest);
-        return verifyOngPatner(mapper,all.getContent());
+
+        List<UsersResponse> usersResponses = new LinkedList<>();
+
+        for (UsersEntity entity : all.getContent()) {
+            usersResponses.add(mapper.map(entity, UsersResponse.class));
+        }
+
+        return UsersPaginationResponse.builder()
+                .count(all.getNumberOfElements())
+                .users(usersResponses).build();
     }
 
     @Override
@@ -118,7 +125,7 @@ public class UsersServiceImpl implements UsersService {
         UsersEntity obj = usersRepository.findByMail(mail);
 
         if (obj != null) {
-            return verifyOrganization(obj, mapper);
+            return mapper.map(obj, UsersResponse.class);
         }
 
         throw new ObjectNotFoundException(
@@ -126,51 +133,28 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
-    public List<UsersResponse> verifyOngPatner(ModelMapper mapper, List<UsersEntity> usersList) {
-        List<UsersResponse> users = new LinkedList<>();
-        for (UsersEntity entity : usersList) {
-            users.add(verifyOrganization(entity, mapper));
-        }
-        return users;
+    private UsersEntity find(Integer id) {
+        Optional<UsersEntity> obj = usersRepository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + UsersEntity.class.getName()));
     }
 
-    public UsersResponse verifyOrganization(UsersEntity entity, ModelMapper mapper) {
+    private ProfileEntity findProfile(Integer id) {
+        Optional<ProfileEntity> obj = profileRepository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + ProfileEntity.class.getName()));
+    }
 
-        if (entity.getOrganization() != null && entity.getOrganization().getProfile().getType().equals("ONG")) {
-            return UsersResponse.builder()
-                    .ong(mapper.map(entity.getOrganization(), OrganizationUserResponse.class))
-                    .urlImg(entity.getUrlImg())
-                    .password(entity.getPassword())
-                    .fullName(entity.getFullName())
-                    .profile(mapper.map(entity.getProfile(), ProfileResponse.class))
-                    .partner(null)
-                    .id(entity.getId())
-                    .mail(entity.getMail())
-                    .build();
+    private OngsEntity findOngs(Integer id) {
+        Optional<OngsEntity> obj = ongsRepository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + OngsEntity.class.getName()));
+    }
 
-        } else if (entity.getOrganization() != null && entity.getOrganization().getProfile().getType().equals("PARTNER")) {
-            return UsersResponse.builder()
-                    .ong(null)
-                    .urlImg(entity.getUrlImg())
-                    .password(entity.getPassword())
-                    .fullName(entity.getFullName())
-                    .profile(mapper.map(entity.getProfile(), ProfileResponse.class))
-                    .partner(mapper.map(entity.getOrganization(), OrganizationUserResponse.class))
-                    .id(entity.getId())
-                    .mail(entity.getMail())
-                    .build();
-        } else {
-            return UsersResponse.builder()
-                    .ong(null)
-                    .urlImg(entity.getUrlImg())
-                    .password(entity.getPassword())
-                    .fullName(entity.getFullName())
-                    .profile(mapper.map(entity.getProfile(), ProfileResponse.class))
-                    .partner(null)
-                    .id(entity.getId())
-                    .mail(entity.getMail())
-                    .build();
-        }
+    private PartnerEntity findPartner(Integer id) {
+        Optional<PartnerEntity> obj = partnerRepository.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + PartnerEntity.class.getName()));
     }
 }
 

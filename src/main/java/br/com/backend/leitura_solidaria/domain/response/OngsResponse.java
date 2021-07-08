@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrganizationUserResponse {
+public class OngsResponse {
 
-    @JsonProperty("id")
+    @JsonProperty("cod_ongs")
     private Integer id;
     @JsonProperty("name")
     private String name;

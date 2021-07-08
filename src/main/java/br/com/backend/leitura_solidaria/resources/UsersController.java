@@ -2,13 +2,10 @@ package br.com.backend.leitura_solidaria.resources;
 
 import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
 import br.com.backend.leitura_solidaria.domain.response.UsersResponse;
-import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
 import br.com.backend.leitura_solidaria.services.UsersService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 
 @RestController

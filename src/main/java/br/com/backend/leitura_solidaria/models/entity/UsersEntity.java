@@ -31,7 +31,11 @@ public class UsersEntity extends BaseEntity {
     private ProfileEntity profile;
 
     @ManyToOne
-    @JoinColumn(name = "cod_organization")
-    private OrganizationEntity organization;
+    @JoinColumn(name = "cod_ongs")
+    private OngsEntity ongs;
+
+    @ManyToOne
+    @JoinColumn(name = "cod_partner")
+    private PartnerEntity partner;
 
 }
