@@ -19,4 +19,8 @@ public class OngsPaginationResponse {
     private List<OngsUserResponse> ongs;
     @JsonProperty("count")
     private Integer count;
+    @JsonProperty("total_elements")
+    private Long totalElements;
+    @JsonProperty("total_pages")
+    private Integer totalPages;
 }

@@ -99,6 +99,8 @@ public class PartnerServiceImpl implements PartnerService {
 
         return PartnerPaginationResponse.builder()
                 .count(all.getNumberOfElements())
+                .totalElements(all.getTotalElements())
+                .totalPages(all.getTotalPages())
                 .partner(partnerResponses).build();
     }
 

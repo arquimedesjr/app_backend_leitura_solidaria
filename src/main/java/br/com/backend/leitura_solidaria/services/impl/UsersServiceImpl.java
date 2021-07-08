@@ -117,6 +117,8 @@ public class UsersServiceImpl implements UsersService {
 
         return UsersPaginationResponse.builder()
                 .count(all.getNumberOfElements())
+                .totalPages(all.getTotalPages())
+                .totalElements(all.getTotalElements())
                 .users(usersResponses).build();
     }
 
