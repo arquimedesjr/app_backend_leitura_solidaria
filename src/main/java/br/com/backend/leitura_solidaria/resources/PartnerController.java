@@ -31,6 +31,12 @@ public class PartnerController {
         return service.findAll(mapper);
     }
 
+    @GetMapping(value = "/partial")
+    @ResponseStatus(HttpStatus.OK)
+    public Object findAllCodeName() {
+        return service.findAllCodeName(mapper);
+    }
+
     @GetMapping(value = {"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public Object find(@PathVariable Integer id) {

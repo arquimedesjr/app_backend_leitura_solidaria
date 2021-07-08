@@ -2,6 +2,7 @@ package br.com.backend.leitura_solidaria.services;
 
 import br.com.backend.leitura_solidaria.domain.request.PartnerRequest;
 import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
+import br.com.backend.leitura_solidaria.domain.response.PartnerCodeNameResponse;
 import br.com.backend.leitura_solidaria.domain.response.PartnerResponse;
 import br.com.backend.leitura_solidaria.domain.response.PartnerUserResponse;
 import br.com.backend.leitura_solidaria.domain.response.pagination.PartnerPaginationResponse;
@@ -12,6 +13,8 @@ import java.util.List;
 public interface PartnerService {
 
     List<PartnerResponse> findAll(ModelMapper mapper);
+
+    List<PartnerCodeNameResponse> findAllCodeName(ModelMapper mapper);
 
     PartnerResponse find(Integer id, ModelMapper mapper);
 

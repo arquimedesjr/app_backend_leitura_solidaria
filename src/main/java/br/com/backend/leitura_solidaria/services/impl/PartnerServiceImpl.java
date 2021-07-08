@@ -2,6 +2,7 @@ package br.com.backend.leitura_solidaria.services.impl;
 
 import br.com.backend.leitura_solidaria.domain.request.PartnerRequest;
 import br.com.backend.leitura_solidaria.domain.response.AddressResponse;
+import br.com.backend.leitura_solidaria.domain.response.PartnerCodeNameResponse;
 import br.com.backend.leitura_solidaria.domain.response.PartnerResponse;
 import br.com.backend.leitura_solidaria.domain.response.pagination.PartnerPaginationResponse;
 import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
@@ -38,11 +39,21 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     @Override
+    public List<PartnerCodeNameResponse> findAllCodeName(ModelMapper mapper) {
+        List<PartnerEntity> list = partnerRepository.findAll();
+        List<PartnerCodeNameResponse> partnerCodeNameResponses = new LinkedList<>();
+        for (PartnerEntity partnerEntity : list) {
+            partnerCodeNameResponses.add(mapper.map(partnerEntity, PartnerCodeNameResponse.class));
+        }
+        return partnerCodeNameResponses;
+    }
+
+    @Override
     public PartnerResponse find(Integer id, ModelMapper mapper) {
 
         PartnerEntity partnerEntity = find(id);
-        List<AddressResponse> addressResponses = converToAddressResponse(partnerEntity,mapper);
-        PartnerResponse partnerResponse = mapper.map(partnerEntity,PartnerResponse.class);
+        List<AddressResponse> addressResponses = converToAddressResponse(partnerEntity, mapper);
+        PartnerResponse partnerResponse = mapper.map(partnerEntity, PartnerResponse.class);
         partnerResponse.setAddress(addressResponses);
 
         return partnerResponse;
@@ -96,7 +107,6 @@ public class PartnerServiceImpl implements PartnerService {
         for (PartnerEntity entity : all.getContent()) {
             partnerResponses.add(mapper.map(entity, PartnerResponse.class));
         }
-
         return PartnerPaginationResponse.builder()
                 .count(all.getNumberOfElements())
                 .totalElements(all.getTotalElements())
@@ -131,11 +141,11 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     private List<AddressResponse> converToAddressResponse(PartnerEntity entity, ModelMapper mapper) {
-            List<AddressResponse> addressResponses =new LinkedList<>();
-            List<AddressEntity> byPartnerId = addressRepository.findByPartnerId(entity.getId());
-            for (AddressEntity addressEntity : byPartnerId) {
-                addressResponses.add(mapper.map(addressEntity, AddressResponse.class));
-            }
+        List<AddressResponse> addressResponses = new LinkedList<>();
+        List<AddressEntity> byPartnerId = addressRepository.findByPartnerId(entity.getId());
+        for (AddressEntity addressEntity : byPartnerId) {
+            addressResponses.add(mapper.map(addressEntity, AddressResponse.class));
+        }
         return addressResponses;
     }
 }
