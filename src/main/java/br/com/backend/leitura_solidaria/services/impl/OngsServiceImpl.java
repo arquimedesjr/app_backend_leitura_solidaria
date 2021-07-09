@@ -120,6 +120,10 @@ public class OngsServiceImpl implements OngsService {
 
     @Override
     public OngsPaginationResponse findPage(Integer page, Integer linesPerPage, String orderBy, String direction, ModelMapper mapper) {
+
+        if (page > 0)
+            page -= 1;
+
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), String.valueOf(orderBy));
         Page<OngsEntity> all = ongsRepository.findAll(pageRequest);
 
