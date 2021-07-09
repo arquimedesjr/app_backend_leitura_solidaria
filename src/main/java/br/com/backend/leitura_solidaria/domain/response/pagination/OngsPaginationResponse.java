@@ -1,5 +1,6 @@
 package br.com.backend.leitura_solidaria.domain.response.pagination;
 
+import br.com.backend.leitura_solidaria.domain.response.OngsResponse;
 import br.com.backend.leitura_solidaria.domain.response.OngsUserResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 public class OngsPaginationResponse {
 
     @JsonProperty("results")
-    private List<OngsUserResponse> ongs;
+    private List<OngsResponse> ongs;
     @JsonProperty("count")
     private Integer count;
     @JsonProperty("total_elements")
