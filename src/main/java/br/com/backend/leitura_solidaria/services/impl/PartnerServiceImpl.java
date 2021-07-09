@@ -10,8 +10,10 @@ import br.com.backend.leitura_solidaria.exception.DataIntegrityException;
 import br.com.backend.leitura_solidaria.exception.ObjectNotFoundException;
 import br.com.backend.leitura_solidaria.models.entity.AddressEntity;
 import br.com.backend.leitura_solidaria.models.entity.PartnerEntity;
+import br.com.backend.leitura_solidaria.models.entity.UsersEntity;
 import br.com.backend.leitura_solidaria.models.repositories.AddressRepository;
 import br.com.backend.leitura_solidaria.models.repositories.PartnerRepository;
+import br.com.backend.leitura_solidaria.models.repositories.UsersRepository;
 import br.com.backend.leitura_solidaria.services.PartnerService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -32,6 +34,7 @@ public class PartnerServiceImpl implements PartnerService {
 
     private final PartnerRepository partnerRepository;
     private final AddressRepository addressRepository;
+    private final UsersRepository usersRepository;
 
     @Override
     public List<PartnerResponse> findAll(ModelMapper mapper) {
@@ -64,8 +67,6 @@ public class PartnerServiceImpl implements PartnerService {
     public PartnerResponse insert(PartnerRequest obj, ModelMapper mapper) {
         try {
 
-
-
             PartnerEntity objEntity = mapper.map(obj, PartnerEntity.class);
             partnerRepository.save(objEntity);
 
@@ -89,17 +90,31 @@ public class PartnerServiceImpl implements PartnerService {
         objEntity.setId(newObj.getId());
         partnerRepository.save(objEntity);
 
-//        AddressEntity newObjAdd = addressRepository.findByStreetAndNumberAndCep(obj.getStreet(), obj.getNumber(), obj.getCep());
-//
-//        AddressEntity addressEntity = mapper.map(obj, AddressEntity.class);
-//        addressEntity.setId(newObjAdd.getId());
-//        addressEntity.setPartner(objEntity);
-//        addressRepository.save(addressEntity);
+        List<AddressEntity> byPartnerId = addressRepository.findByPartnerId(id);
+        for(AddressEntity entity: byPartnerId){
+           addressRepository.delete(entity);
+        }
+
+        for(AddressRequest request: obj.getAddress()){
+            AddressEntity map = mapper.map(request, AddressEntity.class);
+            map.setPartner(objEntity);
+            addressRepository.save(map);
+        }
     }
 
     @Override
     public void delete(Integer id) {
         PartnerEntity obj = find(id);
+
+        UsersEntity byPartnerId1 = usersRepository.findByPartnerId(id);
+        byPartnerId1.setPartner(null);
+        usersRepository.save(byPartnerId1);
+
+        List<AddressEntity> byPartnerId = addressRepository.findByPartnerId(id);
+        for(AddressEntity entity: byPartnerId){
+            addressRepository.delete(entity);
+        }
+
         partnerRepository.delete(obj);
     }
 
