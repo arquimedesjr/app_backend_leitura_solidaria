@@ -3,7 +3,6 @@ package br.com.backend.leitura_solidaria.models.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -12,12 +11,12 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "tb_organization")
-public class OrganizationEntity extends BaseEntity {
+@Table(name = "tb_partner")
+public class PartnerEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_organization")
+    @Column(name = "cod_partner")
     private Integer id;
     @Column(name = "name")
     private String name;
@@ -26,12 +25,8 @@ public class OrganizationEntity extends BaseEntity {
     @Column(name = "num_cnpj")
     private String numCnpj;
 
-    @ManyToOne
-    @JoinColumn(name = "cod_profile")
-    private ProfileEntity profile;
-
     @ElementCollection
-    @CollectionTable(name = "tb_phones")
+    @CollectionTable(name = "tb_phones_partner")
     private Set<String> phones;
 
 

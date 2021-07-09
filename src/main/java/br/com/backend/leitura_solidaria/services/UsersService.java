@@ -1,6 +1,7 @@
 package br.com.backend.leitura_solidaria.services;
 
 import br.com.backend.leitura_solidaria.domain.request.UsersRequest;
+import br.com.backend.leitura_solidaria.domain.response.pagination.UsersPaginationResponse;
 import br.com.backend.leitura_solidaria.domain.response.UsersResponse;
 import org.modelmapper.ModelMapper;
 
@@ -18,7 +19,7 @@ public interface UsersService {
 
     void delete(Integer id);
 
-    List<UsersResponse> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, ModelMapper mapper);
+    UsersPaginationResponse findPage(Integer page, Integer linesPerPage, String orderBy, String direction, ModelMapper mapper);
 
     UsersResponse findMail(String mail, ModelMapper mapper);
 }

@@ -1,5 +1,6 @@
-package br.com.backend.leitura_solidaria.domain.request;
+package br.com.backend.leitura_solidaria.domain.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,19 +14,17 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrganizationRequest {
+public class PartnerCodeNameResponse {
 
+    @JsonProperty("cod_partner")
+    private Integer id;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("mail")
+    @JsonIgnore
     private String mail;
-    @JsonProperty("num_cnpj")
+    @JsonIgnore
     private String numCnpj;
-    @JsonProperty("profile")
-    private Integer profile;
-    @JsonProperty("address")
-    private List<AddressRequest> address;
-    @JsonProperty("phones")
+    @JsonIgnore
     private Set<String> phones;
 
 }
