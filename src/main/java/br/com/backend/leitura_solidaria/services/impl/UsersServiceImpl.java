@@ -106,6 +106,10 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UsersPaginationResponse findPage(Integer page, Integer linesPerPage, String orderBy, String direction, ModelMapper mapper) {
+
+        if (page > 0)
+            page -= 1;
+
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), String.valueOf(orderBy));
         Page<UsersEntity> all = usersRepository.findAll(pageRequest);
 
