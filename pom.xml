@@ -14,7 +14,22 @@
     <artifactId>leitura_solidaria</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>leitura_solitaria</name>
+
     <description>MBA Impacta</description>
+
+    <developers>
+        <developer>
+            <id>medes</id>
+            <name>Arquimedes Junior</name>
+            <email>arquimedeslqjunior@gmail.com</email>
+            <url>https://github.com/arquimedesjr/app_backend_leitura_solidaria</url>
+            <organization>MBA Impacta</organization>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>America/São Paulo</timezone>
+        </developer>
+    </developers>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
