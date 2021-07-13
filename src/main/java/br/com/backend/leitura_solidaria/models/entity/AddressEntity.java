@@ -29,6 +29,8 @@ public class AddressEntity extends BaseEntity {
     private String cep;
     @Column(name = "city")
     private String city;
+    @Column(name = "state")
+    private String state;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cod_partner")

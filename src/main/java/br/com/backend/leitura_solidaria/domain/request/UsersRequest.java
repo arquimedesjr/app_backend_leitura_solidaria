@@ -18,8 +18,6 @@ public class UsersRequest {
     private String mail;
     @JsonProperty("url_image")
     private String urlImg;
-    @JsonProperty("password")
-    private String password;
     @JsonProperty("cod_profile")
     private Integer profile;
     @JsonProperty("cod_ongs")

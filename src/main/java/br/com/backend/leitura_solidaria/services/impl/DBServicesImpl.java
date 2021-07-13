@@ -48,10 +48,10 @@ public class DBServicesImpl implements DBServices {
         profileRepository.saveAll(Arrays.asList(profile1, profile2, profile3, profile4, profile5));
 
 
-        AddressEntity address1 = AddressEntity.builder().street("Rua flores").number("300").complement("apto 303").district("Jardim").cep("03014000").city("Urberlandia").ongs(ongs1).build();
-        AddressEntity address4 = AddressEntity.builder().street("AV rio flores").number("1").complement("apto 111").district("Jardim").cep("03014232").city("Sao Paulo").partner(partner2).build();
-        AddressEntity address3 = AddressEntity.builder().street("AV rio flores").number("1").complement("apto 111").district("Jardim").cep("03014232").city("Sao Paulo").partner(partner1).build();
-        AddressEntity address2 = AddressEntity.builder().street("Avenida Matos").number("105").complement("sala 800").district("Centro").cep("03014232").city("Sao Paulo").partner(partner1).build();
+        AddressEntity address1 = AddressEntity.builder().street("Rua flores").number("300").complement("apto 303").district("Jardim").cep("03014000").state("São Paulo").city("Urberlandia").ongs(ongs1).build();
+        AddressEntity address4 = AddressEntity.builder().street("AV rio flores").number("1").complement("apto 111").district("Jardim").cep("03014232").state("São Paulo").city("Sao Paulo").partner(partner2).build();
+        AddressEntity address3 = AddressEntity.builder().street("AV rio flores").number("1").complement("apto 111").district("Jardim").cep("03014232").state("São Paulo").city("Sao Paulo").partner(partner1).build();
+        AddressEntity address2 = AddressEntity.builder().street("Avenida Matos").number("105").complement("sala 800").district("Centro").cep("03014232").state("São Paulo").city("Sao Paulo").partner(partner1).build();
 
         addressRepository.saveAll(Arrays.asList(address1, address2, address3,address4));
 
