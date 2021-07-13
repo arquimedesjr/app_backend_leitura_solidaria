@@ -72,7 +72,6 @@ public class UsersServiceImpl implements UsersService {
                     .profile(profile)
                     .ongs(obj.getOngs() != null ? findOngs(obj.getOngs()) : null)
                     .partner(obj.getPartner() != null ? findPartner(obj.getPartner()) : null)
-                    .password(bCryptPasswordEncoder.encode(obj.getPassword()))
                     .urlImg(obj.getUrlImg())
                     .build();
 
@@ -94,7 +93,6 @@ public class UsersServiceImpl implements UsersService {
                 .profile(profile)
                 .ongs(obj.getOngs() != null ? findOngs(obj.getOngs()) : null)
                 .partner(obj.getPartner() != null ? findPartner(obj.getPartner()) : null)
-                .password(bCryptPasswordEncoder.encode(obj.getPassword()))
                 .build());
     }
 
