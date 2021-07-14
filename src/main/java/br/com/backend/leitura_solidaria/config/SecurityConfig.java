@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         if (Arrays.asList(env.getActiveProfiles()).contains("test"))
             http.headers().frameOptions().disable();
 
-        http.cors().and();
+        http.cors().disable();
         http.authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
