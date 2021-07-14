@@ -24,6 +24,8 @@ public class AddressResponse {
     private String district;
     @JsonProperty("city")
     private String city;
+    @JsonProperty("state")
+    private String state;
     @JsonProperty("zip_code")
     private String cep;
 
