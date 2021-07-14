@@ -107,8 +107,11 @@ public class OngsServiceImpl implements OngsService {
         OngsEntity obj = find(id);
 
         UsersEntity byOngsId1 = usersRepository.findByOngsId(id);
-        byOngsId1.setOngs(null);
-        usersRepository.save(byOngsId1);
+
+        if(byOngsId1!=null){
+            byOngsId1.setOngs(null);
+            usersRepository.save(byOngsId1);
+        }
 
         List<AddressEntity> byOngsId = addressRepository.findByOngsId(id);
         for(AddressEntity entity: byOngsId){

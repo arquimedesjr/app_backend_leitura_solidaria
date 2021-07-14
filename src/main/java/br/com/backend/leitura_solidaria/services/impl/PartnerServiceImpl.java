@@ -70,7 +70,7 @@ public class PartnerServiceImpl implements PartnerService {
             PartnerEntity objEntity = mapper.map(obj, PartnerEntity.class);
             partnerRepository.save(objEntity);
 
-            for(AddressRequest request: obj.getAddress()){
+            for (AddressRequest request : obj.getAddress()) {
                 AddressEntity map = mapper.map(request, AddressEntity.class);
                 map.setPartner(objEntity);
                 addressRepository.save(map);
@@ -91,11 +91,11 @@ public class PartnerServiceImpl implements PartnerService {
         partnerRepository.save(objEntity);
 
         List<AddressEntity> byPartnerId = addressRepository.findByPartnerId(id);
-        for(AddressEntity entity: byPartnerId){
-           addressRepository.delete(entity);
+        for (AddressEntity entity : byPartnerId) {
+            addressRepository.delete(entity);
         }
 
-        for(AddressRequest request: obj.getAddress()){
+        for (AddressRequest request : obj.getAddress()) {
             AddressEntity map = mapper.map(request, AddressEntity.class);
             map.setPartner(objEntity);
             addressRepository.save(map);
@@ -107,11 +107,13 @@ public class PartnerServiceImpl implements PartnerService {
         PartnerEntity obj = find(id);
 
         UsersEntity byPartnerId1 = usersRepository.findByPartnerId(id);
-        byPartnerId1.setPartner(null);
-        usersRepository.save(byPartnerId1);
+        if (byPartnerId1 != null) {
+            byPartnerId1.setPartner(null);
+            usersRepository.save(byPartnerId1);
+        }
 
         List<AddressEntity> byPartnerId = addressRepository.findByPartnerId(id);
-        for(AddressEntity entity: byPartnerId){
+        for (AddressEntity entity : byPartnerId) {
             addressRepository.delete(entity);
         }
 
