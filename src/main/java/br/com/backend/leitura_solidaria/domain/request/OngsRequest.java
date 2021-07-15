@@ -23,6 +23,10 @@ public class OngsRequest {
     private String numCnpj;
     @JsonProperty("phones")
     private Set<String> phones;
+    @JsonProperty("image")
+    private String image;
+    @JsonProperty("description")
+    private String description;
 
     @JsonProperty("address")
     List<AddressRequest> address;

@@ -24,6 +24,12 @@ public class OngsEntity extends BaseEntity {
     private String mail;
     @Column(name = "num_cnpj")
     private String numCnpj;
+    @Column(name = "description")
+    private String description;
+
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private String image;
 
     @ElementCollection
     @CollectionTable(name = "tb_phones_ongs")
