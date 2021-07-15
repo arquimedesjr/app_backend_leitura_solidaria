@@ -25,6 +25,10 @@ public class OngsResponse {
     private String numCnpj;
     @JsonProperty("phones")
     private Set<String> phones;
+    @JsonProperty("image")
+    private String image;
+    @JsonProperty("description")
+    private String description;
 
     @JsonProperty("address")
     private List<AddressResponse> address;
